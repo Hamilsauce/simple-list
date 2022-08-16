@@ -1,0 +1,21 @@
+<svg id="Layer_1"
+xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+x="0" y="0"
+	 
+width="38"
+height="38" 
+viewBox="0 0 38 38" 
+>
+	<g>
+	  <line 
+	  x1="0"
+	  x2="38"
+	  y1="19"
+	  y2="19"
+	  stroke="#000000"
+	  stroke-width="1"
+	  />
+	</g>
+</svg>
+		<!--<path d="M416,277.333H277.333V416h-42.666V277.333H96v-42.666h138.667V96h42.666v138.667H416V277.333z"/>-->

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SportTrade Clone</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/nav.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="./css/canvas.css" type="text/css" media="all" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.37/vue.min.js"></script>
+  <!-- <link rel="stylesheet" href="./css/chart.css" type="text/css" media="all" /> -->
+  <!-- <script src='https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'></script> -->
+</head>
+
+<body>
+  <!-- <div class="app-nav"> -->
+  <div class="nav-body">
+    <router-link class="home-link" v-bind:to="'/'">
+      <div class="nav-link" @click="closeNav">
+        Home
+      </div>
+    </router-link>
+    <router-link class="new-card-link" v-bind:to="'/add-shift-view'">
+      <div class="nav-link" @click="closeNav">
+        Add Shift
+      </div>
+    </router-link>
+    <div class="nav-link export-json-link" @click="exportJsonClicked" @click="closeNav">
+      Export JSON
+    </div>
+    <div class="nav-link export-csv-link" @click="exportCsvClicked" @click="closeNav">
+      Export CSV
+    </div>
+    <div class="nav-link tabbed-ui-link nav-link" href="./tabbed-ui/index.html">Tabbed UI</div>
+    <div class="nav-link music-link nav-link" href="https://hamilsauce.github.io/music-library-app/">ham radio</div>
+    <div class="nav-link github-link nav-link" href="#">github</div>
+    <!-- <div class="modal-dimmer"></div> -->
+  </div>
+  <div class="nav-footer">
+    <div @click="closeNav" class="close-nav">
+      X
+    </div>
+  </div>
+  </div>
+
+  <main id="app">
+    <header id="header">
+      <svg id="add-option" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="38" height="38" viewBox="0 0 38 38">
+        <g>
+          <line x1="9.5" x2="28.5" y1="19" y2="19" stroke="#000000" stroke-width="3" />
+          <line x1="19" x2="19" y1="9.5" y2="28.5" stroke="#000000" stroke-width="3" />
+        </g>
+      </svg>
+      <!-- <svg id="header-menu-button" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="32" height="32" viewBox="0 0 512 512">
+        <g id="menu-icon">
+          <path d="M64,384h384v-42.666H64V384z M64,277.334h384v-42.667H64V277.334z M64,128v42.665h384V128H64z" />
+        </g>
+      </svg> -->
+      <div class="header-title">serious app</div>
+      <div class="header-funds">$1,220</div>
+    </header>
+
+    <div id="options-container">
+      <div class="option">See Games</div>
+      <div class="option">History</div>
+      <div class="option">News</div>
+      <div class="option">Account</div>
+      <div class="option">Buy</div>
+      <div class="option">Sell</div>
+      <div class="option">Buy</div>
+      <div class="option">Sell</div>
+    </div>
+
+    <section class="view-container">
+
+      <ul class="card-list">
+        <li></li>
+      </ul>
+
+
+      <div class="card hide">
+        <div class="">
+          Phillies at WAS national
+        </div>
+        <div class="card-detail">
+          CARD DETAILS BETCH
+        </div>
+      </div>
+
+      <div class="card" data-display-state="hide" id="card2">
+        <div class="card-header">
+          <h2 class="card-title">Depth-first Traversal</h2>
+        </div>
+        <div class="card-detail">
+          <div class="content-block">
+            Every single tree question that I was given involved
+            depth-first traversal. For example,
+            flatten an array of trees, search the
+            DOM for elements with a specific class name,
+            or build a recursive React component.
+            Every single tree question that I was given involved
+            depth-first traversal. For example,
+            flatten an array of trees, search the
+            DOM for elements with a specific class name,
+            or build a recursive React component.
+
+          </div>
+          <div class="content-block">
+            Every single tree question that I was given involved
+            depth-first traversal. For example,
+            flatten an array of trees, search the
+            DOM for elements with a specific class name,
+            or build a recursive React component.
+            Every single tree question that I was given involved
+            depth-first traversal. For example,
+            flatten an array of trees, search the
+            DOM for elements with a specific class name,
+            or build a recursive React component.
+
+          </div>
+        </div>
+      </div>
+      <div class="card">Buy</div>
+      <div class="card">Buy</div>
+      <div class="card">Sell</div>
+      <div class="card">Phillies at WAS national</div>
+      <div class="card">Buy</div>
+      <div class="card">Buy</div>
+      <div class="card">Sell</div>
+      <div class="card">Phillies at WAS national</div>
+      <div class="card">Buy</div>
+      <div class="card">Buy</div>
+      <div class="card">Sell</div>
+      <div class="card">Phillies at WAS national</div>
+      <div class="card">Buy</div>
+      <div class="card">Buy</div>
+      <div class="card">Sell</div>
+    </section>
+    <!-- <canvas id="canvas"></canvas> -->
+  </main>
+  <!-- <script src="./seedLocalStorage.js" type="module" charset="utf-8"></script> -->
+  <!-- <script src="./list.js" type="text/javascript" charset="utf-8"></script> -->
+</body>
+
+</html>
