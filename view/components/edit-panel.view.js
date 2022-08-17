@@ -1,20 +1,19 @@
 import { View } from '../view.js';
 
 
-export class DetailPanelView extends View {
+export class EditPanelView extends View {
   #isOpen = false;
   #datasource;
   #content = null;
   
   constructor() {
-    super('detail-panel');
+    super('edit-panel');
 
     this.addEventListener('store:change', e => {
       console.warn('DetailPanelView STRE UPDATE', e);
-    })
-
-
+    });
   };
+  
   show() {
     this.panelContent.innerHTML = '';
     this.panelContent.textContent = JSON.stringify(content, null, 2);

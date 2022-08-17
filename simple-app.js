@@ -22,6 +22,9 @@ simpleStore.subscribe('state:loaded', appView);
 
 simpleStore.subscribe('state:changed', appView);
 
+
+
+
 appView.addEventListener('item:add', e => {
   simpleStore.insert({
     content: ['...'],

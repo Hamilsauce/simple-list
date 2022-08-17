@@ -4,10 +4,11 @@ import { template } from './lib/templater.js';
 
 export class View extends EventEmitter {
   #self;
+  #name;
 
   constructor(templateName) {
     super();
-
+this.#name=templateName
     this.#self = template(templateName)
 
     if (!this.#self) throw new Error('View failed to find template with provided name.')
@@ -28,6 +29,7 @@ render() {}
     return this.self.dataset
   }
 
+  get name() { return this.#name }
   get self() { return this.#self }
 
   get dom() { return this.self }

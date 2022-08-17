@@ -1,6 +1,6 @@
 import { ListItem } from './item.view.js';
-import { View } from '../base.view.js';
-import { templater } from '../templater.js';
+import { View } from '../view.js';
+// import { templater } from '../templater.js';
 
 
 const toggleCardContent = (cardEl) => {
@@ -19,26 +19,28 @@ const selectionMode = {
 }
 
 export class ListView extends View {
-  constructor(name, template) {
-    super(name, template);
+  constructor() {
+    super('list');
 
-    this.list;
+    // this.list;
     this.prompt;
-    this.self;
+    // this.self;
     this._selectedItems = new Set();
     this.itemDomMap = new Map();
 
-    const container = document.createElement('div');
+    // const container = document.createElement('div');
 
-    container.classList.add('view-container');
-    container.appendChild(this.self);
+    // container.id = 'view-container';
+    // container.classList.add('view-container');
+    // container.appendChild(this.self);
 
-    this.list = this.self;
-    this.self = container;
-
+    // this.list = this.self;
+    // this.self = container;
     this.renderEmptyList();
 
     this.addEventListener('list:loaded', async (e) => {
+      e.stopPropagation()
+      e.preventDefault()
       await this.render(e.detail.items);
     });
 
@@ -50,7 +52,7 @@ export class ListView extends View {
     });
 
     this.selectionMode = selectionMode.single;
-   
+
     this.promptClickHandler = this.#handleEmptyPromptClick.bind(this);
   }
 
@@ -71,9 +73,9 @@ export class ListView extends View {
     }
 
     this.clearList();
-    
+
     delete this.prompt;
-    
+
     const sortedItems = list.sort((a, b) => {
       if (dateSort === 'desc') { return b.date - a.date }
       else if (dateSort === 'asc') { return a.date - b.date }
@@ -94,9 +96,9 @@ export class ListView extends View {
     const bottom = document.createElement('div');
 
     this.prompt.classList.add('empty-list-prompt');
-    
+
     top.classList.add('prompt-top');
-    
+
     top.textContent = 'You have no items in your list ¯\\_(ツ)_/¯';
 
     bottom.textContent = 'Click here or Add items at bottom to get started.';
@@ -104,7 +106,7 @@ export class ListView extends View {
     bottom.classList.add('prompt-bottom');
 
     this.prompt.append(top, bottom);
-    
+
     this.prompt.addEventListener('click', this.promptClickHandler);
 
     this.list.append(this.prompt);
@@ -144,5 +146,6 @@ export class ListView extends View {
 
   get isEmpty() { return this.itemDomMap.size == 0 };
 
-  get listEl() { return this.list };
+  get list() { return this.self}//.querySelector('#list') };
+  // get listEl() { return this.list };
 }

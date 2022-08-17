@@ -7,9 +7,12 @@
   <title>Simple List</title>
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/main.css" type="text/css" media="all" />
   <link rel="stylesheet" href="./css/nav.css" type="text/css" media="all" />
   <link rel="stylesheet" href="./css/list.css" type="text/css" media="all" />
+  <!-- <link rel="stylesheet" href="./css/list.css" type="text/css" media="all" /> -->
   <link rel="stylesheet" href="./css/empty-prompt.css" type="text/css" media="all" />
+  <link rel="stylesheet" href="./css/edit-panel.css" type="text/css" media="all" />
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.37/vue.min.js"></script> -->
   <!-- <link rel="stylesheet" href="./css/chart.css" type="text/css" media="all" /> -->
   <!-- <script src='https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'></script> -->
@@ -47,16 +50,54 @@
   <template id="app-template">
     <main id="app">
       <div data-component-name="nav" data-component="true" class="component-placeholder"></div>
+      <!-- <div data-component-name="edit-panel" data-component="true" class="component-placeholder"></div> -->
       <div data-component-name="topbar" data-component="true" class="component-placeholder"></div>
       <div data-component-name="options" data-component="true" class="component-placeholder"></div>
-      <div data-component-name="list" data-component="true" class="component-placeholder"></div>
+      
+      <div data-component-name="view-container" data-component="true" class="component-placeholder"></div>
+      <!-- <div id="view-container">
+        
+      </div> -->
+      
       <div data-component-name="toolbar" data-component="true" class="component-placeholder"></div>
     </main>
   </template>
 
+  <template id="view-container-template">
+    <div id="view-container">
+    </div>
+  </template>
   <template id="detail-panel-template">
     <div id="detail-panel">
       <pre id="panel-content"></pre>
+    </div>
+  </template>
+
+  <template id="edit-panel-template">
+    <div id="edit-panel">
+      <div id="panel-content">
+        <header id="panel-header">
+          <div id="panel-header-left"></div>
+          <div id="panel-header-title" data-bind="title"></div>
+          <div id="panel-header-right"></div>
+        </header>
+        <section id="panel-body">
+          <form id="edit-form">
+            <div class="control-group">
+              <label for="title-input">Title</label>
+              <input type="text" name="title-input" id="title-input" value="" />
+            </div>
+            <div class="control-group">
+              <label for="content-input">Content</label>
+              <div id="content-input" name="content-input">...Add some content</div>
+              <!-- <input type="date" name="title-input" id="title-input" value="" /> -->
+            </div>
+          </form>
+          <div id="panel-header-left"></div>
+          <div id="panel-header-title" data-bind="title"></div>
+          <div id="panel-header-right"></div>
+        </section>
+      </div>
     </div>
   </template>
 

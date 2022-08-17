@@ -25,6 +25,8 @@ export class Options extends View {
 
   async render(optionsList = [], defaultListId) {
     this.isLoaded = true;
+    
+   
     const frag = optionsList
       .reduce((fragment, opt, i) => {
         fragment.append(this.#createOption(opt))

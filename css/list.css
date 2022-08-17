@@ -1,71 +1,3 @@
-:root {
-  --bg-color-app: #333B42;
-  --bg-color-app: #3D4245;
-  --bg-color-card: #25335C;
-  --bg-color-card: #25272A;
-  --font-white: #F1F1F1;
-  --gunmetal-op8: #222324BA;
-  --gunmetal-dark: #222324;
-  --gunmetal-accent: #44494E;
-  --gunmetal-light: #25252C;
-  --cardblue1: #333D55;
-  --cardblue2: #212A45;
-  --selectionblue: #222324;
-
-  --themeColor1: #613131;
-  --themeColor2: #25335C;
-  --themeColor3: #415032;
-  --themeColor4: #2F3336;
-  --themeColor5: #4E4230;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  z-index: 1;
-  color: var(--font-white);
-  user-select: none;
-  border: 1px solid transparent;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  font-family: 'Roboto', sans-serif;
-  border: none;
-}
-
-.overlay {
-  opacity: 0.5;
-  position: absolute;
-  top: -20px;
-  left: 0;
-  width: 50vw;
-  height: 100vh;
-  padding: 0px 1px;
-  z-index: -20;
-  border: none;
-}
-
-#app {
-  display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  row-gap: 8px;
-  grid-template-columns: 1fr;
-  width: 100vw;
-  height: 100%;
-  padding: 0px 1px;
-  background-image: url('./sporttrade-ui-crop.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  /* background: var(--bg-color-app); */
-  filter: brightness(120%);
-  overflow: hidden;
-  transition: background 0.4s ease;
-  border: none;
-}
 
 #app-topbar {
   position: sticky;
@@ -274,17 +206,6 @@ body {
 #add-option-button {
   width: 100%;
   height: 100%;
-}
-
-.view-container {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
-  gap: 12px;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  filter: brightness(120%);
 }
 
 .list {
