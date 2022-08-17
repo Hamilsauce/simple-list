@@ -1,17 +1,16 @@
-//
 import { ListItem } from './item.view.js';
 import { View } from '../base.view.js';
 import { templater } from '../templater.js';
 
 
 const toggleCardContent = (cardEl) => {
-  cardEl.dataset.displayState = cardEl.dataset.displayState === 'hide' ? 'show' : 'hide'
-  return cardEl.dataset.displayState
+  cardEl.dataset.displayState = cardEl.dataset.displayState === 'hide' ? 'show' : 'hide';
+  return cardEl.dataset.displayState;
 };
 
 const setCardSelectionState = (cardEl, state) => {
-  cardEl.dataset.selected = state ? state : cardEl.dataset.selected === 'true' ? false : true
-  return cardEl.dataset.selected
+  cardEl.dataset.selected = state ? state : cardEl.dataset.selected === 'true' ? false : true;
+  return cardEl.dataset.selected;
 };
 
 const selectionMode = {
@@ -21,7 +20,7 @@ const selectionMode = {
 
 export class ListView extends View {
   constructor(name, template) {
-    super(name, template)
+    super(name, template);
 
     this.list;
     this.prompt;
@@ -31,16 +30,16 @@ export class ListView extends View {
 
     const container = document.createElement('div');
 
-    container.classList.add('view-container')
-    container.appendChild(this.self)
+    container.classList.add('view-container');
+    container.appendChild(this.self);
 
     this.list = this.self;
     this.self = container;
 
-    this.renderEmptyList()
+    this.renderEmptyList();
 
     this.addEventListener('list:loaded', async (e) => {
-      await this.render(e.detail.items)
+      await this.render(e.detail.items);
     });
 
     this.list.addEventListener('item:click', ({ detail }) => {
@@ -50,13 +49,13 @@ export class ListView extends View {
       else targ.select();
     });
 
-    this.selectionMode = selectionMode.single
+    this.selectionMode = selectionMode.single;
    
     this.promptClickHandler = this.#handleEmptyPromptClick.bind(this);
   }
 
   #handleEmptyPromptClick(e) {
-    this.prompt.removeEventListener('click', this.promptClickHandler)
+    this.prompt.removeEventListener('click', this.promptClickHandler);
 
     this.dispatchEvent(
       new CustomEvent('add-item-clicked', { bubbles: true, detail: { action: 'add-item-clicked' } })
@@ -82,11 +81,10 @@ export class ListView extends View {
 
     sortedItems.forEach((item, i) => {
       item = this.createItem(item);
-      this.itemDomMap.set(item.dom, item)
-      this.appendItem(item)
+      this.itemDomMap.set(item.dom, item);
+      this.appendItem(item);
     });
   }
-
 
   renderEmptyList() {
     this.clearList();
@@ -95,16 +93,19 @@ export class ListView extends View {
     const top = document.createElement('div');
     const bottom = document.createElement('div');
 
-    this.prompt.classList.add('empty-list-prompt')
+    this.prompt.classList.add('empty-list-prompt');
+    
     top.classList.add('prompt-top');
-    top.textContent = 'You have no items in your list ¯\\_(ツ)_/¯'
+    
+    top.textContent = 'You have no items in your list ¯\\_(ツ)_/¯';
 
-    bottom.textContent = 'Click here or Add items at bottom to get started.'
+    bottom.textContent = 'Click here or Add items at bottom to get started.';
 
-    bottom.classList.add('prompt-bottom')
+    bottom.classList.add('prompt-bottom');
 
     this.prompt.append(top, bottom);
-    this.prompt.addEventListener('click', this.promptClickHandler)
+    
+    this.prompt.addEventListener('click', this.promptClickHandler);
 
     this.list.append(this.prompt);
 
@@ -128,7 +129,7 @@ export class ListView extends View {
   }
 
   createItem(data) {
-    const item = new ListItem()
+    const item = new ListItem();
 
     item.setData(data);
 

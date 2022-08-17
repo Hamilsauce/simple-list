@@ -49,19 +49,16 @@ export class ListItemAdapter {
   #author;
   #title;
   #date;
-  #content = []
+  #content = [];
   #item;
 
   constructor(item = {}) {
     this.#item = item;
-    // this.setData(item)
-
     this.id = item.id;
     this.author = item.author;
     this.title = item.title;
     this.date = item.date;
     this.content = item.content;
-
   };
 
   setData(item = {}) {
@@ -69,18 +66,21 @@ export class ListItemAdapter {
   }
 
   get author() {
-    if (this.#author) return this.#author
+    if (this.#author) return this.#author;
   };
 
   set author(newValue) { this.#author = newValue };
 
   set date(newValue) { this.#date = newValue instanceof Date ? newValue : new Date(Date.parse(newValue)) };
+ 
   get date() { return this.#date instanceof Date ? this.#date : new Date(Date.parse(this.#date)) };
 
   set content(newValue) { this.#content = newValue || [] }
+ 
   get content() { return this.#content }
 
   set title(newValue) { this.#title = newValue || [] }
+ 
   get title() { return this.#title }
 
   set id(newValue) { this.#id = newValue || [] }
@@ -101,7 +101,6 @@ export class ListItemAdapter {
 export class SimpleListStore extends Store {
   #state = {}
   #observers = [];
-  // #activeListId;
 
   constructor(initialState, actions, eventMap) {
     super('SIMPLE_LIST');
@@ -110,12 +109,12 @@ export class SimpleListStore extends Store {
 
     this.actionMap = () => ListActionMap;
 
-    this.init.bind(this)()
+    this.init.bind(this)();
   }
 
   async init() {
     await this.loadFromStorage();
-    this.#emitState(this.eventMap.loaded)
+    this.#emitState(this.eventMap.loaded);
   }
 
   #emitState(eventName) {
@@ -130,7 +129,7 @@ export class SimpleListStore extends Store {
       lists: [...Object.values(this.#state.lists)],
       items: this.#items,
       activeListId: this.#activeListId,
-    })
+    });
   }
 
   actions() { return this.actionMap.bind(this)() }
@@ -150,12 +149,12 @@ export class SimpleListStore extends Store {
 
   select(queryPath = [] || '', callback) {
     if (!(queryPath != undefined && (Array.isArray(queryPath) || typeof queryPath === 'string'))) return null;
-    let location
+    let location;
 
     if (queryPath === null) location = this.#state;
 
     else if (queryPath || queryPath.length == 0) {
-      queryPath = typeof queryPath === 'string' ? queryPath.trim().split('/') : queryPath
+      queryPath = typeof queryPath === 'string' ? queryPath.trim().split('/') : queryPath;
 
       location = queryPath
         .reduce((loc, segment, i) => {
@@ -163,14 +162,14 @@ export class SimpleListStore extends Store {
         }, this.#state) || null;
     }
 
-    if (callback && location) callback(location)
+    if (callback && location) callback(location);
 
     return location;
   }
 
   setActiveList(listId) {
     const prev = this.#activeListId;
-    if (!listId || prev == listId) return
+    if (!listId || prev == listId) return;
 
     this.#commit([], { activeListId: listId })
 
@@ -178,7 +177,7 @@ export class SimpleListStore extends Store {
   }
 
   setAppTheme(theme = '') {
-    this.#commit([], { appTheme: theme })
+    this.#commit([], { appTheme: theme });
 
     this.#emitState();
   }
@@ -190,10 +189,11 @@ export class SimpleListStore extends Store {
       // prev = loc;
 
       if (changes) {
-        Object.assign(loc, changes)
+        Object.assign(loc, changes);
       }
+      
       else {
-        delete this.#state.lists[this.#activeListId]
+        delete this.#state.lists[this.#activeListId];
       }
     });
 
@@ -214,14 +214,16 @@ export class SimpleListStore extends Store {
 
   addList({ name }) {
     const id = utils.uuid();
+const created = new Date(Date.now())
 
+console.log('created.toJSON()', created.toJSON())
     this.#commit(['lists'], {
       [id]: {
         name,
         id,
         items: {},
-        createdDate: "2022-08-012T16:06:04.000Z",
-        modifiedDate: "2022-08-12T16:06:04.000Z",
+        createdDate: created.toJSON(),
+        modifiedDate:created.toJSON(),
         author: this.user.id,
       }
     });
@@ -232,29 +234,29 @@ export class SimpleListStore extends Store {
   }
 
   removeList(id) {
-    id = id || this.#activeListId
+    id = id || this.#activeListId;
 
     this.#commit(['lists', id], null);
 
-    this.#activeListId = this.lists[this.lists.length - 1].id
+    this.#activeListId = this.lists[this.lists.length - 1].id;
 
     this.#emitState();
   }
 
   updateItem(id, updates) {
-    if (!this.exists(id)) throw new Error('Id not found in store.updateItem')
+    if (!this.exists(id)) throw new Error('Id not found in store.updateItem');
 
-    this.#commit(['lists', this.#activeListId, 'items', id], updates)
+    this.#commit(['lists', this.#activeListId, 'items', id], updates);
 
-    this.#emitState()
+    this.#emitState();
   }
 
   updateList(id, updates) {
-    if (!this.hasList(id)) throw new Error('Id not found in store.updateItem')
+    if (!this.hasList(id)) throw new Error('Id not found in store.updateItem');
 
-    this.#commit(['lists', id], updates)
+    this.#commit(['lists', id], updates);
 
-    this.#emitState()
+    this.#emitState();
   }
 
   remove(id) {

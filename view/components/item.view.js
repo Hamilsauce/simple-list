@@ -1,5 +1,6 @@
 import { View } from '../view.js';
 import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
+
 const { event, array, utils, text } = ham;
 
 export class ListItem extends View {
@@ -36,19 +37,20 @@ export class ListItem extends View {
 
   constructor(name, template, updateFn) {
     super('list-item');
-    this.instance = this
-    this.cnt = 0
 
-    this.clickHandler = this.handleClick.bind(this)
+    this.instance = this;
+
+    this.clickHandler = this.handleClick.bind(this);
 
     this.headerEl.addEventListener('click', this.clickHandler);
 
-    this.handleEdit = this.editModeHandler.bind(this)
+    this.handleEdit = this.editModeHandler.bind(this);
   }
 
   setData(item) {
     Object.assign(this, item);
-    this.#setCache()
+
+    this.#setCache();
   }
 
   editModeHandler(e) {
@@ -58,8 +60,8 @@ export class ListItem extends View {
 
     if (e.key && e.key === 'Backspace') {
       if (this.contentBlockEls.length === 1 && !this.contentBlockEls[0].textContent.trim()) {
-        e.preventDefault()
-        e.stopPropagation()
+        e.stopPropagation();
+        e.preventDefault();
 
         console.log('inner backspace, sgould prevent default', { e });
       }
@@ -71,18 +73,14 @@ export class ListItem extends View {
       .find(_ => _.dataset.actionType === 'edit')
 
     editButton.textContent = this.editing === true && this.isModified ? 'Save' : this.editing === true ? 'Done' : 'Edit';
-
   }
 
-  #setCache() {
-    this.#cache.push();
-  }
+  #setCache() { this.#cache.push(); }
 
   editMode(state = false) {
     this.editing = state;
 
     if (state === true) {
-
       this.select();
 
       this.titleEl.contentEditable = true;
@@ -92,18 +90,18 @@ export class ListItem extends View {
       event.selectAllContent(this.titleEl);
       this.titleEl.click();
 
-      this.detailEl.addEventListener('keyup', this.handleEdit)
-      this.titleEl.addEventListener('keyup', this.handleEdit)
+      this.detailEl.addEventListener('keyup', this.handleEdit);
+      this.titleEl.addEventListener('keyup', this.handleEdit);
     }
 
     else if (state === false) {
-      this.titleEl.contentEditable = false
-      this.detailEl.contentEditable = false
-      this.date = new Date(Date.now()).toISOString()
+      this.titleEl.contentEditable = false;
+      this.detailEl.contentEditable = false;
+      this.date = new Date(Date.now()).toISOString();
       this.#cache.push();
 
-      this.detailEl.removeEventListener('keyup', this.handleEdit)
-      this.titleEl.removeEventListener('keyup', this.handleEdit)
+      this.detailEl.removeEventListener('keyup', this.handleEdit);
+      this.titleEl.removeEventListener('keyup', this.handleEdit);
     }
 
     this.editing = state;
@@ -111,49 +109,54 @@ export class ListItem extends View {
 
   get isModified() {
     const prev = this.#cache.peek();
-
     const modified = prev !== null && (prev.title !== this.title || prev.content.join('') != this.content.join(''))
+  
     this.self.dataset.modified = this.editing === true && modified ? true : false;
+  
     return modified;
   }
 
   select() {
     this.selected = true;
+  
     return this;
   }
 
   deselect() {
     this.selected = false;
+   
     return this;
   }
 
   setDisplayState(state) {
     this.displayState = state;
+   
     return this;
   }
 
   toggleContentDisplay() {
-    this.setDisplayState(this.displayState === 'hide' ? 'show' : 'hide')
-    return this.displayState
+    this.setDisplayState(this.displayState === 'hide' ? 'show' : 'hide');
+    
+    return this.displayState;
   };
 
   insertContentBlock(content, position = -1) {
     const b = document.createElement('div')
 
-    b.classList.add('content-block')
+    b.classList.add('content-block');
 
     b.textContent = content;
 
     if (position > -1) {
-      this.detailEl.insertAdjacentElement(position, b)
+      this.detailEl.insertAdjacentElement(position, b);
     } else {
-      this.detailEl.append(b)
+      this.detailEl.append(b);
     }
   }
 
   removeDom(position) {
     this.headerEl.removeEventListener('click', this.clickHandler);
-    this.contentBlockEls.forEach(el => el.remove())
+    this.contentBlockEls.forEach(el => el.remove());
 
     this.self.remove();
   }
@@ -166,28 +169,28 @@ export class ListItem extends View {
       date: this.date,
       content: this.content
     }
+    
     this.removeDom();
-    this.instance = null
-    return itemData
+    
+    this.instance = null;
+    
+    return itemData;
   }
 
   findEl(selector) {
-    return this.self.querySelector(selector)
+    return this.self.querySelector(selector);
   }
 
   findEls(selector, el = this.self) {
-    return [...this.self.querySelectorAll(selector)]
+    return [...this.self.querySelectorAll(selector)];
   }
 
   handleClick = e => {
-    const targ = e.target
+    const targ = e.target;
 
     if (this.actions.includes(targ) && this.selected) {
 
       if (targ.dataset.actionType === 'edit') {
-        // e.preventDefault();
-        // e.stopPropagation();
-
         if (this.editing === false) return this.editMode(true);
 
         else {
@@ -210,6 +213,7 @@ export class ListItem extends View {
           }
 
           this.editMode(false)
+          
           return;
         }
       }
@@ -250,6 +254,7 @@ export class ListItem extends View {
   };
 
   get author() { return this.authorEl.textContent }
+  
   set author(newValue) {
     this.authorEl.textContent = newValue
   };
@@ -261,7 +266,6 @@ export class ListItem extends View {
     this.dateEl.textContent = this.date //.toDateString()
   };
 
-
   get dataset() {
     return this.self.dataset
   }
@@ -272,8 +276,8 @@ export class ListItem extends View {
 
   set selected(v) {
     this.dataset.selected = v;
-    this.setDisplayState(this.selected ? 'show' : 'hide')
-
+  
+    this.setDisplayState(this.selected ? 'show' : 'hide');
   }
 
   get editing() {
@@ -282,7 +286,6 @@ export class ListItem extends View {
 
   set editing(v) {
     this.dataset.editing = v;
-
   }
 
   get displayState() {
@@ -300,13 +303,13 @@ export class ListItem extends View {
   get footerEl() {
     return this.findEl('.list-item__footer');
   }
+  
   get headerEl() {
     return this.findEl('.list-item__header');
   }
 
   get authorEl() {
     return this.footerEl.querySelector('.list-item__footer--author');
-
   }
 
   get dateEl() {
@@ -328,5 +331,4 @@ export class ListItem extends View {
   get contentBlockEls() {
     return this.findEls('.content-block', this.detailEl)
   }
-
 }

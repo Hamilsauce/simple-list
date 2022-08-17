@@ -7,10 +7,10 @@ export class Options extends View {
   constructor() {
     super('options')
   
-    this.clickHandler = this.#handleClick.bind(this)
-    this.listLoadHandler = this.#handleListLoad.bind(this)
-    this.stateLoadHandler = this.#handleStateLoad.bind(this)
-    this.editListHandler = this.#handleListEdit.bind(this)
+    this.clickHandler = this.#handleClick.bind(this);
+    this.listLoadHandler = this.#handleListLoad.bind(this);
+    this.stateLoadHandler = this.#handleStateLoad.bind(this);
+    this.editListHandler = this.#handleListEdit.bind(this);
 
     this.addEventListener('list:loaded', this.listLoadHandler);
    
@@ -20,7 +20,7 @@ export class Options extends View {
 
     this.self.addEventListener('click', this.clickHandler);
 
-    event.longPress(this.self, 700, this.#handleLongPress.bind(this))
+    event.longPress(this.self, 700, this.#handleLongPress.bind(this));
   }
 
   async render(optionsList = [], defaultListId) {
@@ -36,7 +36,7 @@ export class Options extends View {
 
     this.optionsContainer.append(frag);
 
-    this.selectOption(defaultListId)
+    this.selectOption(defaultListId);
   }
 
   #createOption({ id, name }) {
@@ -54,24 +54,24 @@ export class Options extends View {
     const option = this.options.find(_ => _.dataset.listId === id);
     if (option) {
       this.activeOption = option;
-      this.activeOption.scrollIntoView({ behavior: 'smooth' })
+      this.activeOption.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
   #emitSelection(id) {
     if (id) {
-      this.emit('option:select', { optionId: id })
+      this.emit('option:select', { optionId: id });
     }
   }
 
   #handleClick(e) {
-    const { target } = e
-    const id = target.dataset.listId
+    const { target } = e;
+    const id = target.dataset.listId;
 
     if (this.#isOption(e) && id) {
-      this.#emitSelection(id)
+      this.#emitSelection(id);
     } else if (this.#isAddOptionButton(e)) {
-      this.emit('option:add')
+      this.emit('option:add');
     }
   }
 
@@ -91,50 +91,49 @@ export class Options extends View {
     opt.click();
 
     const blurOption = fn => {
-      opt.removeEventListener('blur', fn)
-      opt.removeEventListener('click', fn)
+      opt.removeEventListener('blur', fn);
+      opt.removeEventListener('click', fn);
     }
 
-    this.blur = blurOption.bind(this)
+    this.blur = blurOption.bind(this);
 
     const stopEdit = fn => {
-      const newOptionValue = opt.textContent.trim().replace('\n', '')
+      const newOptionValue = opt.textContent.trim().replace('\n', '');
     
-      opt.textContent = newOptionValue || previousOptionValue
+      opt.textContent = newOptionValue || previousOptionValue;
 
       if (newOptionValue != previousOptionValue) {
-
         this.emit('option:edit', {
           id: opt.dataset.listId,
           name: opt.textContent,
         });
-
       }
+      
       opt.blur();
       
       opt.contentEditable = false;
     }
 
-    this.stopEditHandler = stopEdit.bind(this)
+    this.stopEditHandler = stopEdit.bind(this);
   
     opt.addEventListener('blur', this.stopEditHandler);
   }
 
   async #handleStateLoad(e) {
-    const { activeListId, lists } = e.detail
-    if (!(activeListId && lists)) return
+    const { activeListId, lists } = e.detail;
+    if (!(activeListId && lists)) return;
 
-    this.lists = lists
+    this.lists = lists;
 
-    await this.render(lists, activeListId)
+    await this.render(lists, activeListId);
 
     this.selectOption(activeListId);
 
     setTimeout(() => {
       if (this.activeOption) {
-        this.activeOption.scrollIntoView({ behavior: 'smooth' })
+        this.activeOption.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 200)
+    }, 200);
   }
 
   #handleListLoad(e) {
@@ -158,11 +157,10 @@ export class Options extends View {
     }
   }
 
-
   #isAddOptionButton(e) { return e.composedPath().some(el => el instanceof Element && el === this.addOptionButton) }
 
   #isOption(e) {
-    return e.composedPath().some(el => el instanceof Element && el.classList.contains('option'))
+    return e.composedPath().some(el => el instanceof Element && el.classList.contains('option'));
   }
 
   get optionsContainer() { return this.self.querySelector('#options-container') }
@@ -176,11 +174,11 @@ export class Options extends View {
   set activeOption(el) {
     if (el.classList.contains('option')) {
       if (this.activeOption) {
-        this.activeOption.classList.remove('active-option')
+        this.activeOption.classList.remove('active-option');
         this.activeOption.dataset.active = false;
       }
 
-      el.classList.add('active-option')
+      el.classList.add('active-option');
       el.dataset.active = true;
     }
   }

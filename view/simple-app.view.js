@@ -1,13 +1,14 @@
-import { simpleStore } from '../store/simple-store.js'
-import { ListView } from './components/list.view.js'
-import { Nav } from './components/nav.view.js'
-import { Options } from './components/options.view.js'
-import { Toolbar } from './components/toolbar.view.js'
-import { Topbar } from './components/topbar.view.js'
+import { simpleStore } from '../store/simple-store.js';
+import { ListView } from './components/list.view.js';
+import { Nav } from './components/nav.view.js';
+import { Options } from './components/options.view.js';
+import { Toolbar } from './components/toolbar.view.js';
+import { Topbar } from './components/topbar.view.js';
 import { templater } from './templater.js';
 import { View } from './view.js';
-
 import { appThemes } from './lib/app-themes.js';
+
+
 const Components = {
   nav: Nav,
   topbar: Topbar,
@@ -52,23 +53,10 @@ export class AppView extends View {
     this.loadComponents(components);
 
     this.listLoadedHandler = this.onModelChange.bind(this);
-    // this.itemInsertHandler = this.onModelChange.bind(this);
-    // this.itemRemovedHandler = this.onModelChange.bind(this);
-    // this.itemUpdatedHandler = this.onModelChange.bind(this);
-
-
-    // this.addEventListener('state:loaded', (e) => {
-    // le.log('State LOADED', e);
-    //   this.theme = e.detail.appTheme
-    // });
 
     this.addEventListener('state:loaded', this.listLoadedHandler)
 
     this.addEventListener('state:changed', this.listLoadedHandler)
-
-    this.addEventListener('appTheme:changed', (e) => {});
-
-    // this.addEventListener('list:loaded', this.listLoadedHandler);
 
     this.addEventListener('item:insert', this.itemInsertHandler);
 
@@ -77,20 +65,18 @@ export class AppView extends View {
     this.addEventListener('item:updated', this.itemUpdatedHandler);
 
     this.addEventListener('edit-list', e => {
-      this.#components.get('options').dispatch('edit-list-start')
-    })
-
-    // this.self.addEventListener('edit-list', e => {
-    //   this.#components.get('options').dispatch('edit-list-start')
-    // })
+      this.#components.get('options').dispatch('edit-list-start');
+    });
 
     this.self.addEventListener('item:action', ({ detail }) => {
       const { item, action } = detail;
+
       if (action === 'delete') {
-        this.dispatch(this, 'item:remove', { id: detail.item.id })
+        this.dispatch(this, 'item:remove', { id: detail.item.id });
       }
+
       if (action === 'edit') {
-        this.dispatch(this, 'item:edit', item)
+        this.dispatch(this, 'item:edit', item);
       }
     })
 
@@ -98,23 +84,24 @@ export class AppView extends View {
   }
 
   init() {
-    const appPlaceholder = document.querySelector('#app')
+    const appPlaceholder = document.querySelector('#app');
 
-    appPlaceholder.innerHTML = ''
+    appPlaceholder.innerHTML = '';
 
-    document.body.insertBefore(this.self, appPlaceholder.remove())
+    document.body.insertBefore(this.self, appPlaceholder.remove());
 
     this.#components.get('toolbar').addEventListener('add-item-clicked', e => {
       this.dispatchEvent(
         new CustomEvent(ViewEvents.item.add, { bubbles: true })
       )
     });
+
     this.#components.get('list').addEventListener('add-item-clicked', e => {
       this.dispatchEvent(
         new CustomEvent(ViewEvents.item.add, { bubbles: true })
       )
     });
-  
+
     this.self.addEventListener('add-item-clicked', e => {
       this.dispatchEvent(
         new CustomEvent(ViewEvents.item.add, { bubbles: true })
@@ -128,11 +115,7 @@ export class AppView extends View {
     });
 
     this.#components.get('toolbar').addEventListener('edit-list-clicked', e => {
-
       this.dispatch(this.#components.get('options'), 'edit-list-start');
-      // this.#components.get('options').dispatchEvent(
-      //   new CustomEvent(ViewEvents.list.edit, { bubbles: true })
-      // )
     });
 
     this.#components.get('options').on('option:select', ({ optionId }) => {
@@ -141,13 +124,14 @@ export class AppView extends View {
 
     this.#components.get('options').on('option:add', (e) => {
       const name = e && e.detail ? e.detail.listName : 'Unnamed'
+      
       this.dispatch(this, ViewEvents.list.add, { name });
     });
 
     this.#components.get('options').on('option:edit', ({ id, name }) => {
-      // console.log('option:edit', id, name)
       this.dispatch(this, ViewEvents.list.edit, { id, name });
     });
+    
     this.addEventListener('edit-list', ({ id, name }) => {
       this.dispatch(this.#components.get('options'), 'edit-list-start', { id, name });
     });
@@ -160,9 +144,6 @@ export class AppView extends View {
   #on(domEvent, handler) {
     this.self.addEventListener(domEvent, handler);
   }
-
-
-  findElement() {}
 
   findElementsBySelector(selector) { return }
 
@@ -201,20 +182,18 @@ export class AppView extends View {
 
 
   onModelChange(e) {
-    const { detail } = e
-    // console.log('In onModelChange e ', e.type)
-    this.theme = detail.appTheme || 0
-    if (detail.appTheme) {
-      this.theme = detail.appTheme
+    const { detail } = e;
 
-    }
+    this.theme = detail.appTheme || 0;
+
+    if (detail.appTheme) this.theme = detail.appTheme;
 
     const author = { name: simpleStore.user.name || 'unknown', id: simpleStore.user.id, defaultListId: simpleStore.user.defaultListId }
     const items = detail.items.map((item, i) => ({ ...item, author: author.name }));
+  
     this.dispatch(this.#components.get('list'), 'list:loaded', { items });
-    // this.dispatch(this.#components.get('options'), 'state:loaded', { lists: detail.lists });
+    
     this.dispatch(this.#components.get('options'), 'state:loaded', { lists: detail.lists, activeListId: detail.activeListId });
-    // this.dispatch(this.#components.get('options'), 'list:loaded', { lists: detail.lists, activeListId:detail.activeListId });
   }
 
   dispatch(target, event, detail) {
@@ -231,7 +210,5 @@ export class AppView extends View {
 
   set theme(v) {
     document.querySelector('#app').style.background = v;
-  };
-
-  // get listEl() { return this.self };
+  }
 }
