@@ -359,7 +359,7 @@
   color: #EFEFEF;
   max-height: 0px;
   overflow: hidden;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 
 .list-item[data-selected=true]>.list-item__detail .content-block {
@@ -403,7 +403,7 @@
 .list-item[data-selected=true] {
   outline: 0.1em solid #DCDFE080;
 
-  transition: outline 03s 0.1s;
+  transition: outline 0.2s 0.1s;
 }
 
 
