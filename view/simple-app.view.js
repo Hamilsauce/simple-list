@@ -63,7 +63,7 @@ export class AppView extends View {
     this.loadComponents(components);
 
     this.viewContainer.addEventListener('view-loaded', ({ detail }) => {
-      console.log('HEARD  VIEW LOAD IN APP VIEW', { detail });
+      // console.log('HEARD  VIEW LOAD IN APP VIEW', { detail });
 
       this.dispatchEvent(
         new CustomEvent(ViewEvents.view.loaded, { bubbles: true, detail })
@@ -88,7 +88,7 @@ export class AppView extends View {
 
     this.self.addEventListener('item:action', (e) => {
       const { item, action } = e.detail;
-      console.log('e', e)
+      // console.log('e', e)
       if (action === 'delete') {
         this.dispatch(this, 'item:remove', { id: item.id });
       }
@@ -201,9 +201,9 @@ export class AppView extends View {
     if (this.previousState === e.detail) return;
     const { detail } = e;
 
-    console.groupCollapsed('appview state load');
-    console.warn('AppView.onModelChange, Event >>> ', e.type)
-    console.groupEnd('appview state load');
+    // console.groupCollapsed('appview state load');
+    // console.warn('AppView.onModelChange, Event >>> ', e.type)
+    // console.groupEnd('appview state load');
 
     this.previousState = detail
 

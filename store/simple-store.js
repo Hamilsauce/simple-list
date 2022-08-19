@@ -122,7 +122,7 @@ export class SimpleListStore extends Store {
 
     window.listState = this.#state;
 
-    console.warn('Store emitting State, event: ', eventName);
+    // console.warn('Store emitting State, event: ', eventName);
 
     this.emit(eventName, {
       appTheme: this.#state.appTheme || '#FF00FF',
@@ -212,7 +212,7 @@ export class SimpleListStore extends Store {
     const id = utils.uuid();
     const created = new Date(Date.now())
 
-    console.log('created.toJSON()', created.toJSON())
+    // console.log('created.toJSON()', created.toJSON())
     this.#commit(['lists'], {
       [id]: {
         name,
@@ -278,7 +278,7 @@ export class SimpleListStore extends Store {
       activeListId: this.#activeListId,
     }
 
-    console.warn('Saving to LocalStorage');
+    // console.warn('Saving to LocalStorage');
 
     window.localStorage.setItem(this.name, JSON.stringify(state));
 
