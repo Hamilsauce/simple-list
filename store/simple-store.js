@@ -202,7 +202,7 @@ export class SimpleListStore extends Store {
     const id = utils.uuid();
 
     this.#commit(['lists', this.#activeListId, 'items'], {
-      [id]: { ...item, id }
+      [id]: { ...item, id, date: new Date(Date.now()) }
     });
 
     this.#emitState();

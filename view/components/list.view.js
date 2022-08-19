@@ -43,7 +43,7 @@ export class ListView extends View {
 
     this.selectionMode = selectionMode.single;
 
-    this.promptClickHandler = this.#handleEmptyPromptClick.bind(this);
+    this.promptClickHandler = this.#handleAddItem.bind(this);
 
     this.itemActionHandler = this.#handleItemAction.bind(this);
   }
@@ -54,7 +54,9 @@ export class ListView extends View {
     const [itemId, item] = Object.entries(detail.item)[0]
 
     if (detail.action === 'edit' && (itemId && itemId.includes('temp'))) {
-      e.stopPropagation();
+    e.stopPropagation()
+    e.preventDefault()
+      
 
       this.dispatchEvent(
         new CustomEvent('add-item-clicked', {
@@ -67,8 +69,12 @@ export class ListView extends View {
     this.self.removeEventListener('item:action', this.itemActionHandler);
   }
 
-  #handleEmptyPromptClick(e) {
-    this.prompt.removeEventListener('click', this.promptClickHandler);
+  addItem() {
+    this.#handleAddItem()
+  }
+
+  #handleAddItem() {
+    if (this.prompt) this.prompt.removeEventListener('click', this.promptClickHandler);
 
     const id = `temp-item-id-${this.items.length}`;
 

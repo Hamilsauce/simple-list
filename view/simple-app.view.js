@@ -86,11 +86,11 @@ export class AppView extends View {
       this.getComponent('options').dispatch('edit-list-start');
     });
 
-    this.self.addEventListener('item:action', ({ detail }) => {
-      const { item, action } = detail;
-
+    this.self.addEventListener('item:action', (e) => {
+      const { item, action } = e.detail;
+      console.log('e', e)
       if (action === 'delete') {
-        this.dispatch(this, 'item:remove', { id: detail.item.id });
+        this.dispatch(this, 'item:remove', { id: item.id });
       }
 
       if (action === 'edit') {
@@ -101,6 +101,8 @@ export class AppView extends View {
     this.store = simpleStore;
   }
 
+
+
   init() {
     const appPlaceholder = document.querySelector('#app');
 
@@ -109,12 +111,18 @@ export class AppView extends View {
     document.body.insertBefore(this.self, appPlaceholder.remove());
 
     this.getComponent('toolbar').addEventListener('add-item-clicked', e => {
-      this.dispatchEvent(
-        new CustomEvent(ViewEvents.item.add, { bubbles: true })
-      )
+      e.stopPropagation()
+      e.preventDefault()
+      if (this.activeView.name === 'list') {
+        this.activeView.addItem();
+      }
     });
 
-    this.activeView.addEventListener('add-item-clicked', ({ detail }) => {
+    this.activeView.addEventListener('add-item-clicked', (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      const { detail } = e
+
       this.dispatchEvent(
         new CustomEvent(ViewEvents.item.add, { bubbles: true, detail })
       )
