@@ -22,16 +22,8 @@ simpleStore.subscribe('state:loaded', appView);
 
 simpleStore.subscribe('state:changed', appView);
 
-
-
-
-appView.addEventListener('item:add', e => {
-  simpleStore.insert({
-    content: ['...'],
-    title: 'Untitled',
-    date: new Date(Date.now()),
-    author: 'Unknown'
-  });
+appView.addEventListener('item:add', ({ detail }) => {
+  simpleStore.insert(detail);
 });
 
 appView.addEventListener('item:remove', ({ detail }) => {
@@ -70,7 +62,6 @@ appView.addEventListener('view:loaded', e => {
     });
 
     appView.addEventListener('list:select', ({ detail }) => {
-      console.warn('list:select detail', detail);
       simpleStore.setActiveList(detail.listId);
     });
 

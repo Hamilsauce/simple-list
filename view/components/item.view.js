@@ -35,7 +35,7 @@ export class ListItem extends View {
     history: [],
   };
 
-  constructor(name, template, updateFn) {
+  constructor(name, updateFn) {
     super('list-item');
 
     this.instance = this;
@@ -110,33 +110,33 @@ export class ListItem extends View {
   get isModified() {
     const prev = this.#cache.peek();
     const modified = prev !== null && (prev.title !== this.title || prev.content.join('') != this.content.join(''))
-  
+
     this.self.dataset.modified = this.editing === true && modified ? true : false;
-  
+
     return modified;
   }
 
   select() {
     this.selected = true;
-  
+
     return this;
   }
 
   deselect() {
     this.selected = false;
-   
+
     return this;
   }
 
   setDisplayState(state) {
     this.displayState = state;
-   
+
     return this;
   }
 
   toggleContentDisplay() {
     this.setDisplayState(this.displayState === 'hide' ? 'show' : 'hide');
-    
+
     return this.displayState;
   };
 
@@ -169,11 +169,11 @@ export class ListItem extends View {
       date: this.date,
       content: this.content
     }
-    
+
     this.removeDom();
-    
+
     this.instance = null;
-    
+
     return itemData;
   }
 
@@ -213,7 +213,7 @@ export class ListItem extends View {
           }
 
           this.editMode(false)
-          
+
           return;
         }
       }
@@ -254,7 +254,7 @@ export class ListItem extends View {
   };
 
   get author() { return this.authorEl.textContent }
-  
+
   set author(newValue) {
     this.authorEl.textContent = newValue
   };
@@ -276,7 +276,7 @@ export class ListItem extends View {
 
   set selected(v) {
     this.dataset.selected = v;
-  
+
     this.setDisplayState(this.selected ? 'show' : 'hide');
   }
 
@@ -303,7 +303,7 @@ export class ListItem extends View {
   get footerEl() {
     return this.findEl('.list-item__footer');
   }
-  
+
   get headerEl() {
     return this.findEl('.list-item__header');
   }

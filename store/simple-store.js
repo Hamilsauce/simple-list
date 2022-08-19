@@ -183,11 +183,7 @@ export class SimpleListStore extends Store {
   }
 
   #commit(queryPath = [] || '', changes) {
-    let prev;
-
     const location = this.select(queryPath, loc => {
-      // prev = loc;
-
       if (changes) {
         Object.assign(loc, changes);
       }

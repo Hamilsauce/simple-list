@@ -84,26 +84,19 @@ export class Options extends View {
 
   #handleKeyUp({ key }) {
     key = key.toLowerCase()
-    // const id = target.dataset.listId;
 
     if (key === 'enter') {
-    console.log('key', key)
       this.stopEditHandler()
-    this.activeOption.removeEventListener('keyup', this.keyUpHandler);
+      this.activeOption.removeEventListener('keyup', this.keyUpHandler);
     }
-
-    // if (this.#isOption(e) && !this.#isNewOption(target)) {
-    //   this.#emitSelection(id);
-    // } else if (this.#isAddOptionButton(e)) {
-    //   this.#handleAddOption();
-    // }
   }
 
   #stopEdit(prevValue) {
     const opt = this.activeOption;
     const newOptionValue = opt.textContent.trim().replace('\n', '');
-
+    
     opt.textContent = newOptionValue || prevValue;
+
     if (opt.dataset.listId.includes('temp')) {
       this.emit('option:add', { name: opt.textContent });
     }
@@ -136,7 +129,8 @@ export class Options extends View {
     this.optionsContainer.append(this.#createOption({ id, name }));
 
     this.selectOption(id);
-    this.#handleListEdit()
+  
+    this.#handleListEdit();
   }
 
 
@@ -153,35 +147,12 @@ export class Options extends View {
     opt.click();
 
     const blurOption = fn => {
-    opt.removeEventListener('keyup', this.keyUpHandler);
+      opt.removeEventListener('keyup', this.keyUpHandler);
       opt.removeEventListener('blur', fn);
       opt.removeEventListener('click', fn);
     }
 
     this.blur = blurOption.bind(this);
-
-    // const stopEdit = fn => {
-    //   const newOptionValue = opt.textContent.trim().replace('\n', '');
-
-    //   opt.textContent = newOptionValue || previousOptionValue;
-    //   if (opt.dataset.listId.includes('temp')) {
-    //     this.emit('option:add', { name: opt.textContent });
-    //   }
-
-    //   else if (newOptionValue != previousOptionValue) {
-    //     this.emit('option:edit', {
-    //       id: opt.dataset.listId,
-    //       name: opt.textContent,
-    //     });
-    //   }
-
-    //   opt.blur();
-
-    //   opt.contentEditable = false;
-
-    //   this.self.addEventListener('click', this.clickHandler);
-    // }
-    // this.stopEditHandler = stopEdit.bind(this);
 
     opt.addEventListener('blur', e => this.stopEditHandler(previousOptionValue));
     opt.addEventListener('keyup', this.keyUpHandler);

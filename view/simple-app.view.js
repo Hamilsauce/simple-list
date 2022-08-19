@@ -86,7 +86,6 @@ export class AppView extends View {
       this.getComponent('options').dispatch('edit-list-start');
     });
 
-
     this.self.addEventListener('item:action', ({ detail }) => {
       const { item, action } = detail;
 
@@ -115,17 +114,9 @@ export class AppView extends View {
       )
     });
 
-    this.activeView.addEventListener('add-item-clicked', e => {
-      this.changeActiveView('edit-panel')
-
+    this.activeView.addEventListener('add-item-clicked', ({ detail }) => {
       this.dispatchEvent(
-        new CustomEvent(ViewEvents.item.add, { bubbles: true })
-      )
-    });
-
-    this.self.addEventListener('add-item-clicked', e => {
-      this.dispatchEvent(
-        new CustomEvent(ViewEvents.item.add, { bubbles: true })
+        new CustomEvent(ViewEvents.item.add, { bubbles: true, detail })
       )
     });
 

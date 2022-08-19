@@ -1,6 +1,5 @@
 import { ListItem } from './item.view.js';
 import { View } from '../view.js';
-// import { templater } from '../templater.js';
 
 
 const toggleCardContent = (cardEl) => {
@@ -21,10 +20,7 @@ const selectionMode = {
 export class ListView extends View {
   constructor() {
     super('list');
-
-    // this.list;
     this.prompt;
-    // this.self;
     this._selectedItems = new Set();
     this.itemDomMap = new Map();
 
@@ -33,7 +29,8 @@ export class ListView extends View {
     this.addEventListener('list:loaded', async (e) => {
       e.stopPropagation();
       e.preventDefault();
-      await this.render(e.detail.items,'asc');
+
+      await this.render(e.detail.items, 'asc');
     });
 
     this.list.addEventListener('item:click', ({ detail }) => {
@@ -47,15 +44,52 @@ export class ListView extends View {
     this.selectionMode = selectionMode.single;
 
     this.promptClickHandler = this.#handleEmptyPromptClick.bind(this);
+
+    this.itemActionHandler = this.#handleItemAction.bind(this);
+  }
+
+
+  #handleItemAction(e) {
+    const { detail } = e;
+    const [itemId, item] = Object.entries(detail.item)[0]
+
+    if (detail.action === 'edit' && (itemId && itemId.includes('temp'))) {
+      e.stopPropagation();
+
+      this.dispatchEvent(
+        new CustomEvent('add-item-clicked', {
+          bubbles: true,
+          detail: { date: item.date, content: item.content, title: item.title }
+        })
+      );
+    }
+
+    this.self.removeEventListener('item:action', this.itemActionHandler);
   }
 
   #handleEmptyPromptClick(e) {
     this.prompt.removeEventListener('click', this.promptClickHandler);
 
-    this.dispatchEvent(
-      new CustomEvent('add-item-clicked', { bubbles: true, detail: { action: 'add-item-clicked' } })
-    );
+    const id = `temp-item-id-${this.items.length}`;
+
+    const data = {
+      id,
+      title: 'Untitled',
+      content: ['...'],
+      author: '',
+      date: new Date(Date.now()),
+    }
+
+    const item = this.createItem(data);
+    this.itemDomMap.set(item.dom, item);
+
+    this.appendItem(item);
+
+    item.editMode(true);
+
+    this.self.addEventListener('item:action', this.itemActionHandler);
   }
+
 
   render(list = [], dateSort = 'desc') {
     dateSort = dateSort.toLowerCase();
@@ -139,5 +173,4 @@ export class ListView extends View {
   get isEmpty() { return this.itemDomMap.size == 0 };
 
   get list() { return this.self } //.querySelector('#list') };
-  // get listEl() { return this.list };
 }
