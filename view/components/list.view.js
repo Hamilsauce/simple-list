@@ -28,26 +28,19 @@ export class ListView extends View {
     this._selectedItems = new Set();
     this.itemDomMap = new Map();
 
-    // const container = document.createElement('div');
-
-    // container.id = 'view-container';
-    // container.classList.add('view-container');
-    // container.appendChild(this.self);
-
-    // this.list = this.self;
-    // this.self = container;
     this.renderEmptyList();
 
     this.addEventListener('list:loaded', async (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-      await this.render(e.detail.items);
+      e.stopPropagation();
+      e.preventDefault();
+      await this.render(e.detail.items,'asc');
     });
 
     this.list.addEventListener('item:click', ({ detail }) => {
       const targ = detail.item;
 
       if (this.selectedItems.has(targ.dom)) targ.deselect();
+
       else targ.select();
     });
 
@@ -66,7 +59,7 @@ export class ListView extends View {
 
   render(list = [], dateSort = 'desc') {
     dateSort = dateSort.toLowerCase();
-
+console.log('list[0]', list[0]);
     if (list.length === 0) {
       this.renderEmptyList()
       return;
@@ -146,6 +139,6 @@ export class ListView extends View {
 
   get isEmpty() { return this.itemDomMap.size == 0 };
 
-  get list() { return this.self}//.querySelector('#list') };
+  get list() { return this.self } //.querySelector('#list') };
   // get listEl() { return this.list };
 }

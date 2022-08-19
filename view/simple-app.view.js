@@ -62,14 +62,12 @@ export class AppView extends View {
 
     this.loadComponents(components);
 
-
     this.viewContainer.addEventListener('view-loaded', ({ detail }) => {
       console.log('HEARD  VIEW LOAD IN APP VIEW', { detail });
 
-
       this.dispatchEvent(
         new CustomEvent(ViewEvents.view.loaded, { bubbles: true, detail })
-      )
+      );
     });
 
     this.changeActiveView('list')
@@ -99,7 +97,7 @@ export class AppView extends View {
       if (action === 'edit') {
         this.dispatch(this, 'item:edit', item);
       }
-    })
+    });
 
     this.store = simpleStore;
   }
@@ -116,7 +114,6 @@ export class AppView extends View {
         new CustomEvent(ViewEvents.item.add, { bubbles: true })
       )
     });
-
 
     this.activeView.addEventListener('add-item-clicked', e => {
       this.changeActiveView('edit-panel')
@@ -143,11 +140,10 @@ export class AppView extends View {
     });
 
     this.getComponent('options').on('option:select', ({ optionId }) => {
-
       if (this.viewContainer.currentView.name !== 'list') {
         this.changeActiveView('list');
       }
-      
+
       this.dispatch(this, 'list:select', { listId: optionId });
     });
 
@@ -170,13 +166,9 @@ export class AppView extends View {
     this.dispatch(this, ViewEvents.loaded, { isLoaded: this.isLoaded });
   }
 
-  #on(domEvent, handler) {
-    this.self.addEventListener(domEvent, handler);
-  }
+  #on(domEvent, handler) { this.self.addEventListener(domEvent, handler); }
 
-  getComponent(name) {
-    return this.#components.get(name);
-  }
+  getComponent(name) { return this.#components.get(name); }
 
 
   changeActiveView(viewName) {

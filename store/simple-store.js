@@ -72,15 +72,15 @@ export class ListItemAdapter {
   set author(newValue) { this.#author = newValue };
 
   set date(newValue) { this.#date = newValue instanceof Date ? newValue : new Date(Date.parse(newValue)) };
- 
+
   get date() { return this.#date instanceof Date ? this.#date : new Date(Date.parse(this.#date)) };
 
   set content(newValue) { this.#content = newValue || [] }
- 
+
   get content() { return this.#content }
 
   set title(newValue) { this.#title = newValue || [] }
- 
+
   get title() { return this.#title }
 
   set id(newValue) { this.#id = newValue || [] }
@@ -191,7 +191,7 @@ export class SimpleListStore extends Store {
       if (changes) {
         Object.assign(loc, changes);
       }
-      
+
       else {
         delete this.#state.lists[this.#activeListId];
       }
@@ -214,16 +214,16 @@ export class SimpleListStore extends Store {
 
   addList({ name }) {
     const id = utils.uuid();
-const created = new Date(Date.now())
+    const created = new Date(Date.now())
 
-console.log('created.toJSON()', created.toJSON())
+    console.log('created.toJSON()', created.toJSON())
     this.#commit(['lists'], {
       [id]: {
         name,
         id,
         items: {},
         createdDate: created.toJSON(),
-        modifiedDate:created.toJSON(),
+        modifiedDate: created.toJSON(),
         author: this.user.id,
       }
     });
