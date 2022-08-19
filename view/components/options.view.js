@@ -6,16 +6,18 @@ export class Options extends View {
 
   constructor() {
     super('options')
-  
+
     this.clickHandler = this.#handleClick.bind(this);
+    this.keyUpHandler = this.#handleKeyUp.bind(this);
     this.listLoadHandler = this.#handleListLoad.bind(this);
     this.stateLoadHandler = this.#handleStateLoad.bind(this);
     this.editListHandler = this.#handleListEdit.bind(this);
+    this.stopEditHandler = this.#stopEdit.bind(this);
 
     this.addEventListener('list:loaded', this.listLoadHandler);
-   
+
     this.addEventListener('state:loaded', this.stateLoadHandler);
-  
+
     this.addEventListener('edit-list-start', this.editListHandler);
 
     this.self.addEventListener('click', this.clickHandler);
@@ -25,8 +27,8 @@ export class Options extends View {
 
   async render(optionsList = [], defaultListId) {
     this.isLoaded = true;
-    
-   
+
+
     const frag = optionsList
       .reduce((fragment, opt, i) => {
         fragment.append(this.#createOption(opt))
@@ -48,9 +50,12 @@ export class Options extends View {
     opt.dataset.listId = id;
     opt.textContent = (name || '').replace('\n', '');
     opt.dataset.active = false;
+    opt.enterKeyHint = 'done'
 
     return opt;
   }
+
+  #getOptionId(el) { return el.dataset.listId }
 
   selectOption(id) {
     const option = this.options.find(_ => _.dataset.listId === id);
@@ -70,21 +75,76 @@ export class Options extends View {
     const { target } = e;
     const id = target.dataset.listId;
 
-    if (this.#isOption(e) && id) {
+    if (this.#isOption(e) && !this.#isNewOption(target)) {
       this.#emitSelection(id);
     } else if (this.#isAddOptionButton(e)) {
-      this.emit('option:add');
+      this.#handleAddOption();
     }
   }
 
+  #handleKeyUp({ key }) {
+    key = key.toLowerCase()
+    // const id = target.dataset.listId;
+
+    if (key === 'enter') {
+    console.log('key', key)
+      this.stopEditHandler()
+    this.activeOption.removeEventListener('keyup', this.keyUpHandler);
+    }
+
+    // if (this.#isOption(e) && !this.#isNewOption(target)) {
+    //   this.#emitSelection(id);
+    // } else if (this.#isAddOptionButton(e)) {
+    //   this.#handleAddOption();
+    // }
+  }
+
+  #stopEdit(prevValue) {
+    const opt = this.activeOption;
+    const newOptionValue = opt.textContent.trim().replace('\n', '');
+
+    opt.textContent = newOptionValue || prevValue;
+    if (opt.dataset.listId.includes('temp')) {
+      this.emit('option:add', { name: opt.textContent });
+    }
+
+    else if (newOptionValue != prevValue) {
+      this.emit('option:edit', {
+        id: opt.dataset.listId,
+        name: opt.textContent,
+      });
+    }
+
+    opt.blur();
+
+    opt.contentEditable = false;
+
+    this.self.addEventListener('click', this.clickHandler);
+  }
+
+
   #handleLongPress(e) {
+    this.selectOption(this.#getOptionId(e.target))
+    this.#emitSelection(this.activeOption.dataset.listId);
     this.#handleListEdit(e);
   }
 
+  #handleAddOption() {
+    const id = `temp-option-id-${this.lists.length}`;
+    const name = `New Lists`;
+
+    this.optionsContainer.append(this.#createOption({ id, name }));
+
+    this.selectOption(id);
+    this.#handleListEdit()
+  }
+
+
   #handleListEdit(e) {
-    const { target } = e
     const opt = this.activeOption;
     const previousOptionValue = this.activeOption.textContent;
+
+    this.self.removeEventListener('click', this.clickHandler);
 
     opt.contentEditable = true;
 
@@ -93,32 +153,38 @@ export class Options extends View {
     opt.click();
 
     const blurOption = fn => {
+    opt.removeEventListener('keyup', this.keyUpHandler);
       opt.removeEventListener('blur', fn);
       opt.removeEventListener('click', fn);
     }
 
     this.blur = blurOption.bind(this);
 
-    const stopEdit = fn => {
-      const newOptionValue = opt.textContent.trim().replace('\n', '');
-    
-      opt.textContent = newOptionValue || previousOptionValue;
+    // const stopEdit = fn => {
+    //   const newOptionValue = opt.textContent.trim().replace('\n', '');
 
-      if (newOptionValue != previousOptionValue) {
-        this.emit('option:edit', {
-          id: opt.dataset.listId,
-          name: opt.textContent,
-        });
-      }
-      
-      opt.blur();
-      
-      opt.contentEditable = false;
-    }
+    //   opt.textContent = newOptionValue || previousOptionValue;
+    //   if (opt.dataset.listId.includes('temp')) {
+    //     this.emit('option:add', { name: opt.textContent });
+    //   }
 
-    this.stopEditHandler = stopEdit.bind(this);
-  
-    opt.addEventListener('blur', this.stopEditHandler);
+    //   else if (newOptionValue != previousOptionValue) {
+    //     this.emit('option:edit', {
+    //       id: opt.dataset.listId,
+    //       name: opt.textContent,
+    //     });
+    //   }
+
+    //   opt.blur();
+
+    //   opt.contentEditable = false;
+
+    //   this.self.addEventListener('click', this.clickHandler);
+    // }
+    // this.stopEditHandler = stopEdit.bind(this);
+
+    opt.addEventListener('blur', e => this.stopEditHandler(previousOptionValue));
+    opt.addEventListener('keyup', this.keyUpHandler);
   }
 
   async #handleStateLoad(e) {
@@ -144,7 +210,7 @@ export class Options extends View {
       this.lists = lists;
       this.render(lists, activeListId);
     }
-    
+
     this.selectOption(activeListId);
   }
 
@@ -160,6 +226,7 @@ export class Options extends View {
   }
 
   #isAddOptionButton(e) { return e.composedPath().some(el => el instanceof Element && el === this.addOptionButton) }
+  #isNewOption(opt) { return opt.dataset.listId.includes('temp') }
 
   #isOption(e) {
     return e.composedPath().some(el => el instanceof Element && el.classList.contains('option'));

@@ -59,7 +59,6 @@ export class ListView extends View {
 
   render(list = [], dateSort = 'desc') {
     dateSort = dateSort.toLowerCase();
-console.log('list[0]', list[0]);
     if (list.length === 0) {
       this.renderEmptyList()
       return;

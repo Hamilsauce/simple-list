@@ -147,8 +147,8 @@ export class AppView extends View {
       this.dispatch(this, 'list:select', { listId: optionId });
     });
 
-    this.getComponent('options').on('option:add', (e) => {
-      const name = e && e.detail ? e.detail.listName : 'Unnamed'
+    this.getComponent('options').on('option:add', ({ name }) => {
+      name = name ? name : 'Unnamed'
 
       this.dispatch(this, ViewEvents.list.add, { name });
     });
