@@ -82,19 +82,24 @@ export class Options extends View {
     }
   }
 
-  #handleKeyUp({ key }) {
+  #handleKeyUp(e) {
+    let { key } = e;
     key = key.toLowerCase()
 
     if (key === 'enter') {
-      this.stopEditHandler()
+    e.preventDefault()
+    e.stopPropagation()
+      
+      // this.stopEditHandler()
       this.activeOption.removeEventListener('keyup', this.keyUpHandler);
+      // opt.addEventListener('blur', e => this.stopEditHandler);
     }
   }
 
   #stopEdit(prevValue) {
     const opt = this.activeOption;
     const newOptionValue = opt.textContent.trim().replace('\n', '');
-    
+
     opt.textContent = newOptionValue || prevValue;
 
     if (opt.dataset.listId.includes('temp')) {
@@ -129,7 +134,7 @@ export class Options extends View {
     this.optionsContainer.append(this.#createOption({ id, name }));
 
     this.selectOption(id);
-  
+
     this.#handleListEdit();
   }
 
@@ -154,7 +159,7 @@ export class Options extends View {
 
     this.blur = blurOption.bind(this);
 
-    opt.addEventListener('blur', e => this.stopEditHandler(previousOptionValue));
+    opt.addEventListener('blur', this.stopEditHandler);
     opt.addEventListener('keyup', this.keyUpHandler);
   }
 

@@ -54,9 +54,9 @@ export class ListView extends View {
     const [itemId, item] = Object.entries(detail.item)[0]
 
     if (detail.action === 'edit' && (itemId && itemId.includes('temp'))) {
-    e.stopPropagation()
-    e.preventDefault()
-      
+      e.stopPropagation()
+      e.preventDefault()
+
 
       this.dispatchEvent(
         new CustomEvent('add-item-clicked', {
@@ -74,8 +74,11 @@ export class ListView extends View {
   }
 
   #handleAddItem() {
-    if (this.prompt) this.prompt.removeEventListener('click', this.promptClickHandler);
+    if (this.prompt) {
+      this.prompt.removeEventListener('click', this.promptClickHandler);
+      this.prompt.remove()
 
+    }
     const id = `temp-item-id-${this.items.length}`;
 
     const data = {

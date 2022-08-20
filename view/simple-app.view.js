@@ -147,6 +147,8 @@ export class AppView extends View {
     });
 
     this.getComponent('options').on('option:add', ({ name }) => {
+  console.warn('On option:add in AppView', {name});
+    
       name = name ? name : 'Unnamed'
 
       this.dispatch(this, ViewEvents.list.add, { name });

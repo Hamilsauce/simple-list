@@ -134,18 +134,20 @@ export class SimpleListStore extends Store {
 
   actions() { return this.actionMap.bind(this)() }
 
-  _select(query = {}, callback) {
-    let k;
+  /* 
+    _select(query = {}, callback) {
+      let k;
 
-    return query ? this.#items
-      .filter(item => {
-        for (k in query) {
-          if (query[k] !== item[k]) { return false; }
-        }
+      return query ? this.#items
+        .filter(item => {
+          for (k in query) {
+            if (query[k] !== item[k]) { return false; }
+          }
 
-        return true;
-      }) : this.#items
-  }
+          return true;
+        }) : this.#items
+    }
+  */
 
   select(queryPath = [] || '', callback) {
     if (!(queryPath != undefined && (Array.isArray(queryPath) || typeof queryPath === 'string'))) return null;
@@ -212,7 +214,8 @@ export class SimpleListStore extends Store {
     const id = utils.uuid();
     const created = new Date(Date.now())
 
-    // console.log('created.toJSON()', created.toJSON())
+    console.warn('Store.addList called', { name, id, created })
+
     this.#commit(['lists'], {
       [id]: {
         name,
