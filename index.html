@@ -53,12 +53,12 @@
       <!-- <div data-component-name="edit-panel" data-component="true" class="component-placeholder"></div> -->
       <div data-component-name="topbar" data-component="true" class="component-placeholder"></div>
       <div data-component-name="options" data-component="true" class="component-placeholder"></div>
-      
+
       <div data-component-name="view-container" data-component="true" class="component-placeholder"></div>
       <!-- <div id="view-container">
         
       </div> -->
-      
+
       <div data-component-name="toolbar" data-component="true" class="component-placeholder"></div>
     </main>
   </template>
@@ -140,7 +140,16 @@
   <template id="toolbar-template">
     <footer id="app-toolbar">
       <div id="app-toolbar__controls" class="content-block">
-        <button id="toolbar-add-item">Add</button>
+        <!-- <button id="toolbar-add-item">Add</button> -->
+        <svg _id="toolbar-add-item" width="44px" height="44px" viewBox="0 0 492 492" x="0px" y="0px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <g >
+            <path id="toolbar-add-item" d="
+          		  M 256,48
+          		  C141.125,48,48,141.125,48,256s93.125,208,208,208s208-93.125,208-208S370.875,48,256,48z M363,277h-86v86h-42v-86
+          			h-86v-42h86v-86h42v86h86V277z" />
+          </g>
+        </svg>
+
         <button id="toolbar-edit-list">Edit List</button>
         <button id="toolbar-delete-list">Delete List</button>
       </div>

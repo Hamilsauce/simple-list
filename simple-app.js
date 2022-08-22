@@ -5,6 +5,10 @@ import { appThemes } from './view/lib/app-themes.js';
 import { seedLocalStorage } from './lib/seed-localstorage.js';
 import { LIST_SEED } from './simple-list-data1.js';
 
+navigator.virtualKeyboard.addEventListener('geometrychange', (event) => {
+  const { x, y, width, height } = event.target.boundingRect;
+  console.log('Virtual keyboard geometry changed:', x, y, width, height);
+});
 const setAppTheme = () => {};
 
 const LIST_KEY = 'SIMPLE_LIST'
@@ -46,6 +50,9 @@ appView.addEventListener('list:edit', ({ detail }) => {
 
 appView.addEventListener('view:loaded', e => {
   const loadedState = e.detail.isLoaded;
+  navigator.virtualKeyboard.overlaysContent = false;
+
+
   console.log('View LOADED', e);
 
   if (loadedState) {

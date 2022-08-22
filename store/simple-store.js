@@ -1,7 +1,7 @@
 import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
-const { download, date, array, utils, text } = ham;
-
-
+const { help, pipeline, download, date, array, utils, text } = ham;
+// console.log('pipeline', pipeline)
+// help('pipeline')
 import { Store } from './store.model.js';
 
 const InitialState = {
@@ -110,6 +110,21 @@ export class SimpleListStore extends Store {
     this.actionMap = () => ListActionMap;
 
     this.init.bind(this)();
+
+
+    this.numToTextPipe = pipeline(
+      (num) => num + 50,
+      (num) => num * 2,
+      (num) => `Number ${num} is big time!`,
+      (num) => {
+        console.log('IN LOGGER', num)
+        return num
+      },
+    );
+
+    console.log('am', this.numToTextPipe(0))
+    // => 'Number 100 is big time!'
+
   }
 
   async init() {
@@ -127,7 +142,8 @@ export class SimpleListStore extends Store {
     this.emit(eventName, {
       appTheme: this.#state.appTheme || '#FF00FF',
       lists: [...Object.values(this.#state.lists)],
-      items: this.#items,
+      // items: this.#items,
+      items: this.#items.map(_=>({..._,date: new Date(Date.parse(_.date))})),
       activeListId: this.#activeListId,
     });
   }
@@ -244,7 +260,7 @@ export class SimpleListStore extends Store {
 
   updateItem(id, updates) {
     if (!this.exists(id)) throw new Error('Id not found in store.updateItem');
-
+    updates.date = new Date(Date.now())
     this.#commit(['lists', this.#activeListId, 'items', id], updates);
 
     this.#emitState();
@@ -290,7 +306,10 @@ export class SimpleListStore extends Store {
 
   async loadFromStorage() {
     /*  Gets state and passes it to setstate, which fires events  */
-    this.#state = { ...this.#state, ...JSON.parse(window.localStorage.getItem(this.name)) }
+    this.#state = {
+      ...this.#state,
+      ...JSON.parse(window.localStorage.getItem(this.name))
+    }
   }
 
   get #items() { return Object.values(this.activeList.items || {}) }

@@ -1,4 +1,3 @@
-
 #app-topbar {
   position: sticky;
   top: 0;
@@ -49,12 +48,12 @@
 
 #app-toolbar {
   display: grid;
-  grid-template-columns: 4fr;
+  grid-template-columns: 3fr;
   grid-template-rows: auto;
   height: min-content;
-  justify-content: center;
-  align-items: center;
-  padding: 4px 8px;
+  /* justify-content: center; */
+  /* align-items: center; */
+  padding: 0px 8px;
   column-gap: 26px;
   border-top: 1px solid #6D828E70;
   color: var(--font-white);
@@ -63,7 +62,7 @@
 #app-toolbar__controls {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   column-gap: 16px;
   padding: 8px 8px 6px;
@@ -72,15 +71,17 @@
   font-size: 1em;
 }
 
-#app-toolbar__controls button {
-  width: 100%;
+#app-toolbar__controls button,#app-toolbar__controls svg>g>path{
+  width: fit-content;
   height: 38px;
   margin: 0;
   background: #3D1EE0;
-  background: #3D1EE0;
+  fill: #3D1EE0;
   padding: 8px 16px;
   white-space: nowrap;
   border: 1.4px solid #FFFFFF90;
+  stroke-width: 14px; 
+  stroke: #FFFFFF90;
   border-radius: 20px;
   font-size: 0.75em;
   font-weight: 600;

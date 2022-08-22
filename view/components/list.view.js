@@ -30,7 +30,7 @@ export class ListView extends View {
       e.stopPropagation();
       e.preventDefault();
 
-      await this.render(e.detail.items, 'asc');
+      await this.render(e.detail.items, 'desc');
     });
 
     this.list.addEventListener('item:click', ({ detail }) => {
@@ -110,7 +110,7 @@ export class ListView extends View {
     this.clearList();
 
     delete this.prompt;
-
+console.log('list', list)
     const sortedItems = list.sort((a, b) => {
       if (dateSort === 'desc') { return b.date - a.date }
       else if (dateSort === 'asc') { return a.date - b.date }
