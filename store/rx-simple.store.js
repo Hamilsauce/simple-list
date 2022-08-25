@@ -141,8 +141,9 @@ export class SimpleListStore extends Store {
 
     this.emit(eventName, {
       appTheme: this.#state.appTheme || '#FF00FF',
-      lists: [...Object.values(this.#state.lists).map(_=>({..._}))],
-      items: this.#items.map(_ => ({ ..._, date: new Date(Date.parse(_.date)) })),
+      lists: [...Object.values(this.#state.lists)],
+      // items: this.#items,
+      items: this.#items.map(_=>({..._,date: new Date(Date.parse(_.date))})),
       activeListId: this.#activeListId,
     });
   }
@@ -166,24 +167,17 @@ export class SimpleListStore extends Store {
 
   select(queryPath = [] || '', callback) {
     if (!(queryPath != undefined && (Array.isArray(queryPath) || typeof queryPath === 'string'))) return null;
-
     let location;
-    let location2;
 
     if (queryPath === null) location = this.#state;
 
     else if (queryPath || queryPath.length == 0) {
       queryPath = typeof queryPath === 'string' ? queryPath.trim().split('/') : queryPath;
 
-      location = queryPath.reduce((loc, segment, i) => {
-        return loc && loc[segment] ? loc[segment] : null;
-      }, this.#state) || null;
-
-      location2 = {
-        ...queryPath.reduce((loc, segment, i) => {
+      location = queryPath
+        .reduce((loc, segment, i) => {
           return loc && loc[segment] ? loc[segment] : null;
-        }, this.#state)
-      } || null;
+        }, this.#state) || null;
     }
 
     if (callback && location) callback(location);

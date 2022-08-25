@@ -39,7 +39,9 @@ export const appThemes = {
     //   this.pointer = i;
     //   return this.atIndex(i)
     // }
+    console.warn('this.pointer before update', this.pointer)
     this.pointer = this.pointer >= this.colorNames.length - 1 ? 0 : this.pointer + 1;
+    console.warn('this.pointer aftr update', this.pointer)
 
     return this.colors[this.colorNames[this.pointer]];
   }

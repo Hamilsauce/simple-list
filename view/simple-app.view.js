@@ -63,8 +63,6 @@ export class AppView extends View {
     this.loadComponents(components);
 
     this.viewContainer.addEventListener('view-loaded', ({ detail }) => {
-      // console.log('HEARD  VIEW LOAD IN APP VIEW', { detail });
-
       this.dispatchEvent(
         new CustomEvent(ViewEvents.view.loaded, { bubbles: true, detail })
       );
@@ -88,7 +86,7 @@ export class AppView extends View {
 
     this.self.addEventListener('item:action', (e) => {
       const { item, action } = e.detail;
-      // console.log('e', e)
+
       if (action === 'delete') {
         this.dispatch(this, 'item:remove', { id: item.id });
       }
@@ -101,8 +99,6 @@ export class AppView extends View {
     this.store = simpleStore;
   }
 
-
-
   init() {
     const appPlaceholder = document.querySelector('#app');
 
@@ -111,17 +107,19 @@ export class AppView extends View {
     document.body.insertBefore(this.self, appPlaceholder.remove());
 
     this.getComponent('toolbar').addEventListener('add-item-clicked', e => {
-      e.stopPropagation()
-      e.preventDefault()
+      e.stopPropagation();
+      e.preventDefault();
+
       if (this.activeView.name === 'list') {
         this.activeView.addItem();
       }
     });
 
     this.activeView.addEventListener('add-item-clicked', (e) => {
-      e.stopPropagation()
-      e.preventDefault()
-      const { detail } = e
+      e.stopPropagation();
+      e.preventDefault();
+
+      const { detail } = e;
 
       this.dispatchEvent(
         new CustomEvent(ViewEvents.item.add, { bubbles: true, detail })
@@ -147,9 +145,9 @@ export class AppView extends View {
     });
 
     this.getComponent('options').on('option:add', ({ name }) => {
-  console.warn('On option:add in AppView', {name});
-    
-      name = name ? name : 'Unnamed'
+      console.warn('On option:add in AppView', { name });
+
+      name = name ? name : 'Unnamed';
 
       this.dispatch(this, ViewEvents.list.add, { name });
     });
@@ -171,12 +169,6 @@ export class AppView extends View {
 
   getComponent(name) { return this.#components.get(name); }
 
-
-  changeActiveView(viewName) {
-    if (!Views[viewName]) return;
-    this.viewContainer.loadView(...Object.entries(Views).find(_ => _[0] === viewName))
-  }
-
   loadComponents(componentConfig) {
     Object.entries(componentConfig).forEach(
       ([name, component]) => {
@@ -195,19 +187,24 @@ export class AppView extends View {
     return this.getComponent(name);
   }
 
+  changeActiveView(viewName) {
+    if (!Views[viewName]) return;
+    this.viewContainer.loadView(...Object.entries(Views).find(_ => _[0] === viewName))
+  }
 
   onModelChange(e) {
-    e.stopPropagation()
-    e.preventDefault()
+    e.stopPropagation();
+    e.preventDefault();
 
     if (this.previousState === e.detail) return;
+
     const { detail } = e;
 
     // console.groupCollapsed('appview state load');
     // console.warn('AppView.onModelChange, Event >>> ', e.type)
     // console.groupEnd('appview state load');
 
-    this.previousState = detail
+    this.previousState = detail;
 
     if (e.type === 'state:loaded') {
       this.removeEventListener('state:loaded', this.listLoadedHandler)
@@ -226,7 +223,12 @@ export class AppView extends View {
       this.dispatch(this.activeView, 'list:loaded', { items })
     }
 
-    this.dispatch(this.getComponent('options'), 'state:loaded', { lists: detail.lists, activeListId: detail.activeListId }, false);
+    this.dispatch(
+      this.getComponent('options'),
+      'state:loaded', {
+        lists: detail.lists,
+        activeListId: detail.activeListId
+      }, false);
   }
 
   dispatch(target, event, detail, bubbles = true) {
