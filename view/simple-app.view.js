@@ -170,8 +170,8 @@ export class AppView extends View {
   getComponent(name) { return this.#components.get(name); }
 
   loadComponents(componentConfig) {
-    Object.entries(componentConfig).forEach(
-      ([name, component]) => {
+    Object.entries(componentConfig)
+      .forEach(([name, component]) => {
         this.addComponent(name, component);
       });
   }
@@ -199,10 +199,6 @@ export class AppView extends View {
     if (this.previousState === e.detail) return;
 
     const { detail } = e;
-
-    // console.groupCollapsed('appview state load');
-    // console.warn('AppView.onModelChange, Event >>> ', e.type)
-    // console.groupEnd('appview state load');
 
     this.previousState = detail;
 

@@ -99,7 +99,7 @@ export class ListItemAdapter {
 }
 
 export class SimpleListStore extends Store {
-  #state = {}
+  #state = {};
   #observers = [];
 
   constructor(initialState, actions, eventMap) {
@@ -112,6 +112,18 @@ export class SimpleListStore extends Store {
     this.init.bind(this)();
 
 
+    this.arrayPipe = pipeline(
+      (...arr) => `arrber ${arr} is big time!`,
+      (arr) => {
+        console.log('IN LOGGER', arr)
+        return arr
+      },
+    );
+    
+    
+    console.log('arrayPipe', this.arrayPipe([0, 10, 3]))
+    
+    
     this.numToTextPipe = pipeline(
       (num) => num + 50,
       (num) => num * 2,
@@ -122,7 +134,7 @@ export class SimpleListStore extends Store {
       },
     );
 
-    console.log('am', this.numToTextPipe(0))
+    // console.log('am', this.numToTextPipe(0))
     // => 'Number 100 is big time!'
 
   }
