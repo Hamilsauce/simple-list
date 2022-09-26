@@ -100,7 +100,11 @@ export class ListItemAdapter {
 
 export class SimpleListStore extends Store {
   #state = {};
+
   #observers = [];
+
+  // #activeListHistory = new Set();
+  #activeListHistory = [];
 
   constructor(initialState, actions, eventMap) {
     super('SIMPLE_LIST');
@@ -108,9 +112,11 @@ export class SimpleListStore extends Store {
     this.eventMap = EventMap;
 
     this.actionMap = () => ListActionMap;
-
+    // this.#activeListHistory
     this.init.bind(this)();
 
+
+    /*  EXPERIMENTS  */
 
     this.arrayPipe = pipeline(
       (...arr) => `arrber ${arr} is big time!`,
@@ -119,11 +125,9 @@ export class SimpleListStore extends Store {
         return arr
       },
     );
-    
-    
+
     console.log('arrayPipe', this.arrayPipe([0, 10, 3]))
-    
-    
+
     this.numToTextPipe = pipeline(
       (num) => num + 50,
       (num) => num * 2,
@@ -153,7 +157,7 @@ export class SimpleListStore extends Store {
 
     this.emit(eventName, {
       appTheme: this.#state.appTheme || '#FF00FF',
-      lists: [...Object.values(this.#state.lists).map(_=>({..._}))],
+      lists: [...Object.values(this.#state.lists).map(_ => ({ ..._ }))],
       items: this.#items.map(_ => ({ ..._, date: new Date(Date.parse(_.date)) })),
       activeListId: this.#activeListId,
     });
@@ -248,8 +252,6 @@ export class SimpleListStore extends Store {
     const id = utils.uuid();
     const created = new Date(Date.now())
 
-    console.warn('Store.addList called', { name, id, created })
-
     this.#commit(['lists'], {
       [id]: {
         name,
@@ -315,8 +317,6 @@ export class SimpleListStore extends Store {
       activeListId: this.#activeListId,
     }
 
-    // console.warn('Saving to LocalStorage');
-
     window.localStorage.setItem(this.name, JSON.stringify(state));
 
     this.loadFromStorage();
@@ -344,7 +344,12 @@ export class SimpleListStore extends Store {
 
   get #activeListId() { return this.#state.activeListId || this.#items[0].id }
 
-  set #activeListId(v) { this.#commit([], { activeListId: v }) }
+  set #activeListId(v) {
+    if (this.#state.activeListId && this.#state.activeListId != v) {
+      // this.#activeListHistory.push()
+    }
+    this.#commit([], { activeListId: v })
+  }
 
   get keys() { return Object.keys(this.activeList.items) || [] }
 }

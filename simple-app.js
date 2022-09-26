@@ -12,6 +12,7 @@ navigator.virtualKeyboard.addEventListener('geometrychange', (event) => {
 const setAppTheme = () => {};
 
 const LIST_KEY = 'SIMPLE_LIST'
+  // seedLocalStorage(LIST_KEY, LIST_SEED);
 
 if (!localStorage.getItem(LIST_KEY)) {
   seedLocalStorage(LIST_KEY, LIST_SEED);
@@ -50,10 +51,8 @@ appView.addEventListener('list:edit', ({ detail }) => {
 
 appView.addEventListener('view:loaded', e => {
   const loadedState = e.detail.isLoaded;
+  
   navigator.virtualKeyboard.overlaysContent = false;
-
-
-  console.log('View LOADED', e);
 
   if (loadedState) {
     const navClose = document.querySelector('.close-nav');
