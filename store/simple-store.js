@@ -1,8 +1,7 @@
 import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
-const { help, pipeline, download, date, array, utils, text } = ham;
-// console.log('pipeline', pipeline)
-// help('pipeline')
 import { Store } from './store.model.js';
+
+const { help, pipeline, download, date, array, utils, text } = ham;
 
 const InitialState = {
   lists: [

@@ -8,14 +8,14 @@ export class View extends EventEmitter {
 
   constructor(templateName) {
     super();
-this.#name=templateName
+    this.#name = templateName
     this.#self = template(templateName)
 
     if (!this.#self) throw new Error('View failed to find template with provided name.')
   }
 
-render() {}
-// select() {}
+  render() {}
+  // select() {}
 
   selectElement(selector, el = this.self) {
     return el.querySelector(selector);
@@ -30,6 +30,7 @@ render() {}
   }
 
   get name() { return this.#name }
+ 
   get self() { return this.#self }
 
   get dom() { return this.self }

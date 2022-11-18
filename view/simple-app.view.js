@@ -178,11 +178,13 @@ export class AppView extends View {
 
   addComponent(name, ComponentClass) {
     /*  Searches App Template for element with matching `data-component-name` then replaces with component template */
-
+    console.time('addComponent, componet - ' + name);
     this.self.insertBefore(
-      this.#components.set(name, new ComponentClass(name, templater.get(name))).get(name).self,
+      this.#components.set(name, new ComponentClass(name, templater.get(name))).get(name).dom,
       this.self.querySelector(`[data-component-name="${name}"]`).remove()
     );
+    console.timeEnd('addComponent, component - ' + name);
+    // console.timeEnd('addComponent');
 
     return this.getComponent(name);
   }

@@ -5,6 +5,9 @@ import { appThemes } from './view/lib/app-themes.js';
 import { seedLocalStorage } from './lib/seed-localstorage.js';
 import { LIST_SEED } from './simple-list-data1.js';
 
+import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
+const { template, utils, download } = ham;
+download('simple-list-data.json', localStorage.getItem('SIMPLE_LIST'))
 navigator.virtualKeyboard.addEventListener('geometrychange', (event) => {
   const { x, y, width, height } = event.target.boundingRect;
   console.log('Virtual keyboard geometry changed:', x, y, width, height);
@@ -17,6 +20,8 @@ const LIST_KEY = 'SIMPLE_LIST'
 if (!localStorage.getItem(LIST_KEY)) {
   seedLocalStorage(LIST_KEY, LIST_SEED);
 }
+
+
 
 const appView = new AppView();
 

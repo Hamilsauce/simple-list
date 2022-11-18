@@ -7,10 +7,10 @@ const navClose = document.querySelector('.close-nav');
 const activeOption = null;
 
 const toggleCardContent = (cardEl) => {
-  cardEl.dataset.displayState =
-    cardEl.dataset.displayState === 'hide' ?
-    'show' : 'hide'
-  return cardEl.dataset.displayState
+  cardEl.dataset.displayState = cardEl.dataset.displayState === 'hide' ?
+    'show' : 'hide';
+
+  return cardEl.dataset.displayState;
 };
 
 
@@ -46,10 +46,7 @@ optionButtons.forEach(b => {
 const cards = [...document.querySelectorAll('.card')]
 // const chartContainer = document.querySelector('.chart-container')
 // const chartEl = document.querySelector('.chart')
-cards.forEach((x, i) => {
-
-
-});
+// cards.forEach((x, i) => {});
 
 
 contentEl.addEventListener('click', e => {

@@ -10,55 +10,19 @@
   <link rel="stylesheet" href="./css/main.css" type="text/css" media="all" />
   <link rel="stylesheet" href="./css/nav.css" type="text/css" media="all" />
   <link rel="stylesheet" href="./css/list.css" type="text/css" media="all" />
-  <!-- <link rel="stylesheet" href="./css/list.css" type="text/css" media="all" /> -->
   <link rel="stylesheet" href="./css/empty-prompt.css" type="text/css" media="all" />
   <link rel="stylesheet" href="./css/edit-panel.css" type="text/css" media="all" />
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.37/vue.min.js"></script> -->
-  <!-- <link rel="stylesheet" href="./css/chart.css" type="text/css" media="all" /> -->
-  <!-- <script src='https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'></script> -->
 </head>
 
 <body>
-  <!-- <nav class="app-nav">
-    <div class="nav-body">
-      <router-link class="home-link" v-bind:to="'/'">
-        <div class="nav-link" @click="closeNav">Home</div>
-      </router-link>
-      <router-link class="new-card-link" v-bind:to="'/add-shift-view'">
-        <div class="nav-link" @click="closeNav">New Item</div>
-      </router-link>
-      <div class="nav-link view-state-link" @click="exportJsonClicked" @click="closeNav">
-        Peek State
-      </div>
-      <div class="nav-link export-csv-link" @click="exportCsvClicked" @click="closeNav">
-        Export CSV
-      </div>
-      <div class="nav-link tabbed-ui-link nav-link" href="./tabbed-ui/index.html">Tabbed UI</div>
-      <div class="nav-link music-link nav-link" href="https://hamilsauce.github.io/music-library-app/">ham radio</div>
-      <div class="nav-link github-link nav-link" href="#">github</div>
-    </div>
-    <div class="nav-footer">
-      <div @click="closeNav" class="close-nav">
-        X
-      </div>
-    </div>
-  </nav> -->
-
-
   <div id="app"></div>
 
   <template id="app-template">
     <main id="app">
       <div data-component-name="nav" data-component="true" class="component-placeholder"></div>
-      <!-- <div data-component-name="edit-panel" data-component="true" class="component-placeholder"></div> -->
       <div data-component-name="topbar" data-component="true" class="component-placeholder"></div>
       <div data-component-name="options" data-component="true" class="component-placeholder"></div>
-
       <div data-component-name="view-container" data-component="true" class="component-placeholder"></div>
-      <!-- <div id="view-container">
-        
-      </div> -->
-
       <div data-component-name="toolbar" data-component="true" class="component-placeholder"></div>
     </main>
   </template>
@@ -67,6 +31,7 @@
     <div id="view-container">
     </div>
   </template>
+
   <template id="detail-panel-template">
     <div id="detail-panel">
       <pre id="panel-content"></pre>
@@ -90,7 +55,6 @@
             <div class="control-group">
               <label for="content-input">Content</label>
               <div id="content-input" name="content-input">...Add some content</div>
-              <!-- <input type="date" name="title-input" id="title-input" value="" /> -->
             </div>
           </form>
           <div id="panel-header-left"></div>
@@ -103,8 +67,7 @@
 
   <template id="options-template">
     <div id="options">
-      <section id="options-container">
-      </section>
+      <section id="options-container"></section>
       <div id="add-option-button">
         <svg id="add-option-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="38" height="38" viewBox="3 3 32 32">
           <g id="add-option-group">
@@ -115,7 +78,6 @@
       </div>
     </div>
   </template>
-
 
   <template id="topbar-template">
     <header id="app-topbar">
@@ -140,13 +102,9 @@
   <template id="toolbar-template">
     <footer id="app-toolbar">
       <div id="app-toolbar__controls" class="content-block">
-        <!-- <button id="toolbar-add-item">Add</button> -->
         <svg _id="toolbar-add-item" width="44px" height="44px" viewBox="0 0 492 492" x="0px" y="0px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <g>
-            <path id="toolbar-add-item" d="
-          		M 256,48
-          	  C141.125,48,48,141.125,48,256s93.125,208,208,208s208-93.125,208-208S370.875,48,256,48z M363,277h-86v86h-42v-86
-          		h-86v-42h86v-86h42v86h86V277z" />
+            <path id="toolbar-add-item" d="M 256,48 C141.125,48,48,141.125,48,256s93.125,208,208,208s208-93.125,208-208S370.875,48,256,48z M363,277h-86v86h-42v-86 h-86v-42h86v-86h42v86h86V277z" />
           </g>
         </svg>
 
@@ -176,7 +134,6 @@
         <div class="list-item__footer--date"></div>
       </footer>
     </li>
-
   </template>
 
   <template id="nav-template">
@@ -197,7 +154,6 @@
         <div class="nav-link tabbed-ui-link nav-link" href="./tabbed-ui/index.html">Tabbed UI</div>
         <div class="nav-link music-link nav-link" href="https://hamilsauce.github.io/music-library-app/">ham radio</div>
         <div class="nav-link github-link nav-link" href="#">github</div>
-        <!-- <div class="modal-dimmer"></div> -->
       </div>
       <div class="nav-footer">
         <div @click="closeNav" class="close-nav">
@@ -205,11 +161,9 @@
         </div>
       </div>
     </nav>
-
   </template>
 
   <script src="./simple-app.js" type="module" charset="utf-8"></script>
-
 </body>
 
 </html>
