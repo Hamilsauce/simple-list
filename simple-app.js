@@ -4,24 +4,29 @@ import { DetailPanelView } from './view/components/detail-panel.view.js';
 import { appThemes } from './view/lib/app-themes.js';
 import { seedLocalStorage } from './lib/seed-localstorage.js';
 import { LIST_SEED } from './simple-list-data1.js';
-
+import { swipe$ } from './lib/swipe-x.js';
 import ham from 'https://hamilsauce.github.io/hamhelper/hamhelper1.0.0.js';
-const { template, utils, download } = ham;
-download('simple-list-data.json', localStorage.getItem('SIMPLE_LIST'))
+const { template, utils, download, rxjs } = ham;
+
+// download('simple-list-data.json', localStorage.getItem('SIMPLE_LIST'))
+const {
+  map,
+  tap,
+} = rxjs.operators;
+
 navigator.virtualKeyboard.addEventListener('geometrychange', (event) => {
   const { x, y, width, height } = event.target.boundingRect;
   console.log('Virtual keyboard geometry changed:', x, y, width, height);
 });
+
 const setAppTheme = () => {};
 
 const LIST_KEY = 'SIMPLE_LIST'
-  // seedLocalStorage(LIST_KEY, LIST_SEED);
+// seedLocalStorage(LIST_KEY, LIST_SEED);
 
 if (!localStorage.getItem(LIST_KEY)) {
   seedLocalStorage(LIST_KEY, LIST_SEED);
 }
-
-
 
 const appView = new AppView();
 
@@ -56,10 +61,19 @@ appView.addEventListener('list:edit', ({ detail }) => {
 
 appView.addEventListener('view:loaded', e => {
   const loadedState = e.detail.isLoaded;
-  
+
   navigator.virtualKeyboard.overlaysContent = false;
 
   if (loadedState) {
+
+    setTimeout(() => {
+
+      swipe$.pipe(
+        map(x => simpleStore.selectListByOffset(x)),
+      ).subscribe();
+
+    }, 0);
+
     const navClose = document.querySelector('.close-nav');
 
     const menuButton = document.querySelector('#topbar-menu-button');

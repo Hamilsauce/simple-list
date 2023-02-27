@@ -68,6 +68,14 @@ export class AppView extends View {
       );
     });
 
+    this.viewContainer.addEventListener('swipe', ({ detail }) => {
+      console.warn('SWIPE IN APP VIEW', detail)
+      simpleStore.selectListByOffset(+detail.offset)
+      // this.dispatchEvent(
+      //   new CustomEvent(ViewEvents.view.loaded, { bubbles: true, detail })
+      // );
+    });
+
     this.changeActiveView('list')
 
     this.listLoadedHandler = this.onModelChange.bind(this);
@@ -169,22 +177,27 @@ export class AppView extends View {
 
   getComponent(name) { return this.#components.get(name); }
 
-  loadComponents(componentConfig) {
-    Object.entries(componentConfig)
-      .forEach(([name, component]) => {
-        this.addComponent(name, component);
+  async loadComponents(componentConfig) {
+    console.time('addComponent') //, componet - ' + name);
+
+    const res = await Object.entries(componentConfig)
+      .forEach(async ([name, component]) => {
+        await this.addComponent(name, component);
       });
+
+    console.timeEnd('addComponent');
   }
 
-  addComponent(name, ComponentClass) {
+  async addComponent(name, ComponentClass) {
     /*  Searches App Template for element with matching `data-component-name` then replaces with component template */
-    console.time('addComponent, componet - ' + name);
+
+
     this.self.insertBefore(
       this.#components.set(name, new ComponentClass(name, templater.get(name))).get(name).dom,
       this.self.querySelector(`[data-component-name="${name}"]`).remove()
     );
-    console.timeEnd('addComponent, component - ' + name);
-    // console.timeEnd('addComponent');
+
+    // console.timeEnd('addComponent, component - ' + name);
 
     return this.getComponent(name);
   }

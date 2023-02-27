@@ -76,4 +76,5 @@ body {
   height: 100%;
   overflow: auto;
   filter: brightness(120%);
+  touch-action: none;
 }

@@ -108,10 +108,8 @@ export class SimpleListStore extends Store {
   constructor(initialState, actions, eventMap) {
     super('SIMPLE_LIST');
 
-    this.eventMap = EventMap;
-
     this.actionMap = () => ListActionMap;
-    // this.#activeListHistory
+
     this.init.bind(this)();
 
 
@@ -125,7 +123,7 @@ export class SimpleListStore extends Store {
       },
     );
 
-    console.log('arrayPipe', this.arrayPipe([0, 10, 3]))
+    // console.log('arrayPipe', this.arrayPipe([0, 10, 3]))
 
     this.numToTextPipe = pipeline(
       (num) => num + 50,
@@ -144,15 +142,15 @@ export class SimpleListStore extends Store {
 
   async init() {
     await this.loadFromStorage();
-    this.#emitState(this.eventMap.loaded);
+
+    this.#emitState(EventMap.loaded);
   }
 
   #emitState(eventName) {
-    eventName = eventName || this.eventMap.changed;
+    eventName = eventName || EventMap.changed;
+    console.warn('[[STORE eventName]]: ', eventName)
 
     window.listState = this.#state;
-
-    // console.warn('Store emitting State, event: ', eventName);
 
     this.emit(eventName, {
       appTheme: this.#state.appTheme || '#FF00FF',
@@ -180,6 +178,7 @@ export class SimpleListStore extends Store {
   */
 
   select(queryPath = [] || '', callback) {
+    // console.log('queryPath', queryPath)
     if (!(queryPath != undefined && (Array.isArray(queryPath) || typeof queryPath === 'string'))) return null;
 
     let location;
@@ -204,6 +203,18 @@ export class SimpleListStore extends Store {
     if (callback && location) callback(location);
 
     return location;
+  }
+
+  selectListByOffset(offset = 0) {
+    const activeIndex = this.listKeys.indexOf(this.#activeListId);
+
+    const nextIndex = activeIndex + offset;
+
+    if (nextIndex < 0 || nextIndex >= this.listKeys.length) {
+      return null;
+    }
+
+    this.setActiveList(this.listKeys[nextIndex]);
   }
 
   setActiveList(listId) {
@@ -331,6 +342,10 @@ export class SimpleListStore extends Store {
 
   get #items() { return Object.values(this.activeList.items || {}) }
 
+  get keys() { return Object.keys(this.activeList.items) || [] }
+
+  get listKeys() { return Object.keys(this.#state.lists) }
+
   get lists() { return Object.values(this.#state.lists) }
 
   get state() { return this.#state || {} }
@@ -350,7 +365,6 @@ export class SimpleListStore extends Store {
     this.#commit([], { activeListId: v })
   }
 
-  get keys() { return Object.keys(this.activeList.items) || [] }
 }
 
 export const simpleStore = new SimpleListStore(InitialState, ListActionMap, EventMap);
